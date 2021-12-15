@@ -1,6 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { WeatherData } from "../../../shared/Weather";
-import { Location_T, WeatherCondition_T } from "../Types/WeatherType";
 
 
 interface LinearGraphData {
@@ -20,8 +18,8 @@ export function LinearGraph(props: LinearGraph_P) {
     const { parent, Height, RealHeightPercent, ShowNumber, DataUnit, ...rest } = props;
     const CanvasRef = useRef<HTMLCanvasElement>(null);
 
-    // useEffect(() => {DrawGraph()}, []);
-    useEffect(() => {DrawGraph()}, [parent.current?.scrollWidth]);
+    // useEffect(() => {DrawGraph()}, [props]);
+    useEffect(() => {DrawGraph()}, [parent.current?.scrollWidth, props.data]);
 
     function DrawGraph() {
         console.log("DRAW GRAPH");

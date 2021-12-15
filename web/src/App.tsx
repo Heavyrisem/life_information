@@ -4,6 +4,8 @@ import './App.css';
 import { Weather } from './Routes/Weather/Weather';
 import styled from 'styled-components';
 
+import { NextDayWeatherProvider, NextHourWeatherProvider } from './context/NextWeather';
+
 const Scroll = styled.div`
 	width: 100vw;
 	height: 100vh;
@@ -15,7 +17,11 @@ function App() {
 	return (
 		<Scroll>
 			
-			<Weather />
+            <NextHourWeatherProvider>
+            <NextDayWeatherProvider>
+				<Weather />
+			</NextDayWeatherProvider>
+			</NextHourWeatherProvider>
 
 		</Scroll>
 	);

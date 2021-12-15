@@ -1,29 +1,40 @@
 export enum Location_T {
-    SEOUL = "서울",
-    BUSAN = "부산",
-    DAEGU = "대구",
-    INCHEON = "인천",
-    GWANGJU = "광주",
-    DAEJON = "대전",
-    ULSAN = "울산",
-    SEJONG = "세종",
-    GYEONG_GI = "경기",
-    GANG_WON = "강원",
-    CHUNGBUG = "충북",
-    CHUNGNAM = "충남",
-    JEONBUG = "전북",
-    JEONNAM = "전남",
-    GYEONGBUG = "경북",
-    GYEONGNAM = "경남",
-    JEJU = "제주",
-    // USERLOCATION = "사용자의 위치"
+    SEOUL = "서울특별시",
+    BUSAN = "부산광역시",
+    DAEGU = "대구광역시",
+    INCHEON = "인천광역시",
+    GWANGJU = "광주광역시",
+    DAEJEON = "대전광역시",
+    ULSAN = "울산광역시",
+    SEJONG = "세종특별자치시",
+    GYEONG_GI = "경기도",
+    GANG_WON = "강원도",
+    CHUNGBUK = "충청북도",
+    CHUNGNAM = "충청남도",
+    JEONBUK = "전라북도",
+    JEONNAM = "전라남도",
+    GYEONGBUK = "경상북도",
+    GYEONGNAM = "경상남도",
+    JEJU = "제주특별자치시",
+    USERLOCATION = "사용자의 위치"
 }
 
-export enum WeatherCondition_T {
-    CLOUDY = "흐림",
-    RAIN = "비",
-    SNOW = "눈",
-    SUNNY = "화창함"
+export enum Conditions_T {
+    Thunderstorm = "Thunderstorm",
+    Drizzle = "Drizzle",
+    Rain = "Rain",
+    Snow = "Snow",
+    Mist = "Mist",
+    Smoke = "Smoke",
+    Haze = "Haze",
+    Dust = "Dust",
+    Fog = "Fog",
+    Sand = "Sand",
+    Ash = "Ash",
+    Squall = "Squall",
+    Tornado = "Tornado",
+    Clear = "Clear",
+    Clouds = "Clouds"
 }
 
 export const LocationArray = enumKeys(Location_T);

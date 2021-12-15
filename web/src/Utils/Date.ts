@@ -1,6 +1,7 @@
 
 export function GetHour(Target: Date) {
     // console.log(Target);
+    Target = new Date(Target);
     const Now = new Date();
     // const CalculatedDate = new Date(Math.abs(Target.getTime() - Now.getTime()));
 

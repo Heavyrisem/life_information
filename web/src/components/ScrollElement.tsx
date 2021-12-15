@@ -71,6 +71,7 @@ export const VerticalElement = styled.div`
 export const HorizontalContainer = styled.div`
     display: inline-block;
     display: flex;
+    align-items: center;
 `;
 export const HorizontalElement = styled.div<{flex?: number}>`
     /* display: inline-block; */
