@@ -8,7 +8,7 @@ export default {
         const { Location, Position } = req.body;
 
         if (Location) {
-            if (!(Location === Location_T.USERLOCATION && Position)) {
+            if (!(Location === Location_T.USERLOCATION || Position)) {
 
                 for (let i = 0; i < LocationArray.length; i++) {
                     const KEY = LocationArray[i];
@@ -16,7 +16,7 @@ export default {
                     if (Location_T[KEY] === Location) {
                         const Coord = Location_coords[KEY];
                         
-                        // console.log(Coord);
+                        console.log(Coord);
                         req.body.Position = Coord;
                     }
                 }

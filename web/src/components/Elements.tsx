@@ -1,6 +1,13 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 
+
+export const ScrollView = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+`;
+
 interface StyledScrollElement_P {
     hideScroll?: boolean
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Map as KakaoMap, Marker } from "react-kakao-maps";
 import styled from "styled-components";
+import { Location_latlon } from "../../../shared/Weather";
 
 
 interface MapContainer_P { height: number }
@@ -11,31 +12,23 @@ const MapContainer = styled.div<MapContainer_P>`
 `;
 
 interface Map_P extends MapContainer_P {
-    
+    center: Location_latlon
 }
 
 export function Map(props: Map_P) {
-    const { ...rest } = props;
-
-    const [UserLatLon, setUserLatLon] = useState<daum.maps.LatLng>();
+    const { center, ...rest } = props;
+    const [CenterCoords, setCenterCoords] = useState<daum.maps.LatLng>();
 
     useEffect(() => {
-        const watchID = navigator.geolocation.watchPosition(Pos => {
-            setUserLatLon(new daum.maps.LatLng(Pos.coords.latitude, Pos.coords.longitude));
-            console.log(Pos.coords.latitude, Pos.coords.longitude);
-        });
-
-        return () => {
-            navigator.geolocation.clearWatch(watchID);
-        }
+        setCenterCoords(new daum.maps.LatLng(center.lat, center.lon));
     }, []);
 
     return (
         <>
-        {UserLatLon?
+        {CenterCoords?
             <MapContainer {...rest}>
-                <KakaoMap options={{center: UserLatLon, disableDoubleClick: true, disableDoubleClickZoom: true}}>
-                    <Marker options={{position: UserLatLon}} />
+                <KakaoMap options={{center: CenterCoords, disableDoubleClick: true, disableDoubleClickZoom: true}}>
+                    <Marker options={{position: CenterCoords}} />
                 </KakaoMap>
             </MapContainer>:
             <span>위치를 찾을 수 없습니다.</span>

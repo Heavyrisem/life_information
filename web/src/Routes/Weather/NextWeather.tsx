@@ -1,16 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { WeatherData } from "../../../../shared/Weather";
 import { HorizontalRangeGraph } from "../../components/HorizontalRangeGraph";
 import { LinearGraph } from "../../components/LinearGraph";
-import { ElementTitle, HorizontalContainer, HorizontalDivider, HorizontalElement, ScrollElement, VerticalContainer, VerticalElement } from "../../components/ScrollElement";
+import { ElementTitle, HorizontalContainer, HorizontalDivider, HorizontalElement, ScrollElement, VerticalContainer, VerticalElement } from "../../components/Elements";
 import { NextDayWeatherContext, NextHourWeatherContext } from "../../context/NextWeather";
-import { Location_T, Conditions_T } from "../../Types/WeatherType";
 import { GetDay, GetHour } from "../../Utils/Date";
 
 import { GiWaterDrop } from "react-icons/gi";
-import { WiCloud, WiDaySunny, WiHail, WiHumidity } from "react-icons/wi";
 import { BsFillCloudRainFill } from "react-icons/bs";
-import API from "../../API";
 
 
 // const initNextHourWeather: WeatherData[] = Array.from({length: 23}, (_, i) => ({
@@ -34,50 +30,64 @@ export function NextHourWeather() {
 
     useEffect(() => {
         // setNextHourWeather(initNextHourWeather)
+        console.log("NextWeather");
     }, []); // DEV
 
     return (
         <ScrollElement hideScroll>
             {(ref: React.RefObject<HTMLDivElement>) => (
+
                 <VerticalContainer>
-                    <ElementTitle>시간별 날씨</ElementTitle>
-                    <HorizontalDivider />
-                    <HorizontalContainer style={{whiteSpace: 'nowrap'}}>
-                    {NextHourWeatherData.map((Weather, i) => (
 
-                        <HorizontalElement flex={1} style={{textAlign: 'center'}} key={i}>
-                            <div style={{fontSize: '.8rem'}}>
-                                {GetHour(Weather.timestamp)}
-                            </div>
-                            <HorizontalContainer style={{fontSize: '.5rem', width: '50%', margin: 'auto'}}>
-                            </HorizontalContainer>
-                        </HorizontalElement>
+                    {NextHourWeatherData.length?
+                    <>
+                        <ElementTitle>시간별 날씨</ElementTitle>
+                        <HorizontalDivider />
+                        <HorizontalContainer style={{whiteSpace: 'nowrap'}}>
+                        {NextHourWeatherData.map((Weather, i) => (
 
-                    ))}
-                    </HorizontalContainer>
-                    <LinearGraph parent={ref} Height={50} RealHeightPercent={30} data={{
-                        
-                        labels: NextHourWeatherData.map(V => V.timestamp.getHours().toString()),
-                        data: NextHourWeatherData.map(V => V.temperture.current)
+                            <HorizontalElement flex={1} style={{textAlign: 'center'}} key={i}>
+                                <div style={{fontSize: '.8rem'}}>
+                                    {GetHour(Weather.timestamp)}
+                                </div>
+                                <HorizontalContainer style={{fontSize: '.5rem', width: '50%', margin: 'auto'}}>
+                                </HorizontalContainer>
+                            </HorizontalElement>
 
-                    }} DataUnit={"°"} ShowNumber />
-                    <HorizontalContainer style={{whiteSpace: 'nowrap'}}>
-                    {NextHourWeatherData.map((Weather, i) => (
+                        ))}
+                        </HorizontalContainer>
+                        <LinearGraph parent={ref} Height={50} RealHeightPercent={30} data={{
+                            
+                            labels: NextHourWeatherData.map(V => V.timestamp.getHours().toString()),
+                            data: NextHourWeatherData.map(V => V.temperture.current)
 
-                        <VerticalContainer style={{padding: '0 .5rem', fontSize: '.5rem', textAlign: 'center'}} key={i}>
-                            <HorizontalContainer style={{padding: '.1rem', alignItems: 'center'}}>
-                                <GiWaterDrop style={{padding: '0 .2rem'}} />
-                                <HorizontalElement>{Weather.humidity}%</HorizontalElement>
-                            </HorizontalContainer>
+                        }} DataUnit={"°"} ShowNumber />
+                        <HorizontalContainer style={{whiteSpace: 'nowrap'}}>
+                        {NextHourWeatherData.map((Weather, i) => (
 
-                            <HorizontalContainer style={{padding: '.1rem', alignItems: 'center'}}>
-                                <BsFillCloudRainFill style={{padding: '0 .2rem'}} />
-                                <HorizontalElement>{Weather.rainProbability}%</HorizontalElement>
-                            </HorizontalContainer>
-                        </VerticalContainer>
+                            <VerticalContainer style={{padding: '0 .5rem', fontSize: '.5rem', textAlign: 'center', margin: 'auto'}} key={i}>
 
-                    ))}
-                    </HorizontalContainer>
+                                <HorizontalContainer style={{textAlign: 'center', margin: 'auto'}}>
+                                    <img src={`http://openweathermap.org/img/wn/${Weather.condition.icon}@2x.png`} style={{ width: '2rem', padding: 0}} />
+                                </HorizontalContainer>
+
+                                <HorizontalContainer style={{padding: '.1rem', alignItems: 'center'}}>
+                                    <GiWaterDrop style={{padding: '0 .2rem'}} />
+                                    <HorizontalElement>{Weather.humidity}%</HorizontalElement>
+                                </HorizontalContainer>
+
+                                <HorizontalContainer style={{padding: '.1rem', alignItems: 'center'}}>
+                                    <BsFillCloudRainFill style={{padding: '0 .2rem'}} />
+                                    <HorizontalElement>{Weather.rainProbability}%</HorizontalElement>
+                                </HorizontalContainer>
+
+                            </VerticalContainer>
+
+                        ))}
+                        </HorizontalContainer>
+
+                    </>: <span>로딩 중입니다.</span>
+                    }
                 </VerticalContainer>
             )}
         </ScrollElement>

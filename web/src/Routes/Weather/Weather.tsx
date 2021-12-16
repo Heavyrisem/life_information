@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { ScrollView } from "../../components/ScrollView";
-import { ScrollElement, Emphasis } from "../../components/ScrollElement";
+import { ScrollElement, Emphasis, ScrollView } from "../../components/Elements";
 
 import { WeatherData } from "../../../../shared/Weather";
 import { LocationArray, Location_T, Conditions_T } from "../../Types/WeatherType";
@@ -9,6 +8,7 @@ import { NextDayWeatherContext, NextHourWeatherContext } from "../../context/Nex
 import { NextDayWeather, NextHourWeather } from "./NextWeather";
 import { Map } from "../../components/Map";
 import API from "../../API";
+import { UserLocationContext } from "../../context/User";
 
 
 
@@ -50,6 +50,7 @@ export function Weather() {
     const [CurrentWeather, setCurrentWeather] = useState<WeatherData>();
     const { setNextHourWeather } = useContext(NextHourWeatherContext);
     const { setNextDayWeather } = useContext(NextDayWeatherContext);
+    const { UserLocation, setUserLocation } = useContext(UserLocationContext);
     
     // useEffect(() => {
     //     for (const Weather of NextWeather) console.log(Weather.timestamp);
@@ -57,19 +58,53 @@ export function Weather() {
 
     useEffect(() => {
 
-        API.weather.current({ Location: Location_T.GYEONG_GI }).then(res => {
+        navigator.geolocation.getCurrentPosition(Pos => {
+            setUserLocation({
+                ...UserLocation,
+                Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude }
+            });
+            // console.log(Pos.coords.latitude, Pos.coords.longitude);
+        });
+
+
+        // setUserLocation({ LocationName: Location_T.USERLOCATION });
+    }, []);
+
+    useEffect(() => {
+
+        if (!UserLocation) return;
+        if (UserLocation.LocationName === Location_T.USERLOCATION && !UserLocation.Coords) return;
+        
+        console.log(UserLocation);
+
+        const Request = {
+            Location: UserLocation.LocationName,
+            Position: (UserLocation.LocationName === Location_T.USERLOCATION)? UserLocation.Coords : undefined
+        }
+
+        API.weather.current({ ...Request }).then(res => {
             if (res.status) setCurrentWeather(res.result);
         }).catch(err => console.log(err));
 
 
-        API.weather.forecast("hour", { Location: Location_T.GYEONG_GI }).then(res => {
+        API.weather.forecast("hour", { ...Request }).then(res => {
             if (res.status) setNextHourWeather(res.result);
         }).catch(err => console.log(err));
 
-        API.weather.forecast("week", { Location: Location_T.GYEONG_GI }).then(res => {
+        API.weather.forecast("week", { ...Request }).then(res => {
             if (res.status) setNextDayWeather(res.result);
         }).catch(err => console.log(err));
-    }, []);
+
+    }, [UserLocation]);
+
+    function LocationSelectHandler(e: React.ChangeEvent<HTMLSelectElement>) {
+        if (e.target.value) {
+            setUserLocation({
+                ...UserLocation,
+                LocationName: e.target.value as Location_T
+            })
+        }
+    }
 
     return (
         <ScrollView>
@@ -77,8 +112,8 @@ export function Weather() {
             <Emphasis>
                 {CurrentWeather&&
                     <>
-                        <LocationSelection>
-                            {LocationArray.map(K => <option selected={Location_T[K]===CurrentWeather.location} value={K} key={K}>{Location_T[K]}</option>)}
+                        <LocationSelection onChange={LocationSelectHandler}>
+                            {LocationArray.map(K => <option selected={Location_T[K]===CurrentWeather.location} value={Location_T[K]} key={K}>{Location_T[K]}</option>)}
                         </LocationSelection>
                         <Degree>{CurrentWeather.temperture.current}°</Degree>
                         <div>{CurrentWeather.condition.description}</div>
@@ -92,7 +127,7 @@ export function Weather() {
             <NextDayWeather />
 
             <ScrollElement style={{padding: '1rem'}}>
-                <Map height={10} />
+                {UserLocation.Coords&& <Map height={10} center={{...UserLocation.Coords}} />}
             </ScrollElement>
 
         </ScrollView>

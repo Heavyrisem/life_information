@@ -4,7 +4,7 @@ import { Location_coords } from "../../shared/OpenWeatherAPI";
 import { LocationArray, Location_T } from "../../shared/Weather";
 // import { OpenWeatherAPI } from "../model/OpenWeatherAPI";
 
-const API = new OpenWeatherMap("21d5ef6432edd2d558243d66466ee62d", { lang: Language.Korean, units: Units.Metric });
+const API = new OpenWeatherMap("458bad37714b04968d3b022911e2fd70", { lang: Language.Korean, units: Units.Metric });
 // const API = new OpenWeatherAPI("21d5ef6432edd2d558243d66466ee62d");
 
 // API.getCurrentForecastByID({id: LocationID_T.GYEONG_GI}).then(v => console.log(v.data))

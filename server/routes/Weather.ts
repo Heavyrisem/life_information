@@ -2,9 +2,7 @@ import { Request, Response, Router } from "express";
 import Weather from "../middleware/Weather";
 
 import { current_Request, current_Response, ERROR_T, forecast_Request, forecast_Response } from "../../shared/Network";
-import { Location_T } from "../../shared/Weather";
 import Global from "../Global";
-import { WeatherForecastAPI_Response, WeatherInformation_Response } from "../../shared/OpenWeatherAPI";
 import { DailyDataBlock } from "owm-onecall-api";
 
 const router = Router();

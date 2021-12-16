@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
+import usePrevious from "../hooks/usePrevious";
+import { equalArray } from "../Utils/Array";
 
 
 interface LinearGraphData {
@@ -14,12 +16,17 @@ interface LinearGraph_P extends React.HTMLAttributes<HTMLCanvasElement> {
     ShowNumber?: boolean
     DataUnit?: string
 }
-export function LinearGraph(props: LinearGraph_P) {
+export const LinearGraph = React.memo(function(props: LinearGraph_P) {
     const { parent, Height, RealHeightPercent, ShowNumber, DataUnit, ...rest } = props;
     const CanvasRef = useRef<HTMLCanvasElement>(null);
+    const previousData = usePrevious(props.data);
 
-    // useEffect(() => {DrawGraph()}, [props]);
-    useEffect(() => {DrawGraph()}, [parent.current?.scrollWidth, props.data]);
+    useEffect(() => {
+        
+        console.log(props.data);
+        if (!previousData || !equalArray(previousData.data, props.data.data)) DrawGraph();
+
+    }, [props.data]);
 
     function DrawGraph() {
         console.log("DRAW GRAPH");
@@ -29,7 +36,7 @@ export function LinearGraph(props: LinearGraph_P) {
         const ctx = Canvas.getContext('2d');
         if (!ctx) return;
         const Width = Container.scrollWidth - parseFloat(getComputedStyle(Container).paddingLeft) - parseFloat(getComputedStyle(Container).paddingRight);
-        console.log((getComputedStyle(Container).paddingLeft), Width);
+        console.log(Container.scrollWidth);
 
         
         const Data = props.data;
@@ -85,4 +92,4 @@ export function LinearGraph(props: LinearGraph_P) {
         
         </canvas>
     )
-}
+});

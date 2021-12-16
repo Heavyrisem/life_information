@@ -5,6 +5,11 @@ import { Weather } from './Routes/Weather/Weather';
 import styled from 'styled-components';
 
 import { NextDayWeatherProvider, NextHourWeatherProvider } from './context/NextWeather';
+import { UserLocationProvider } from './context/User';
+import NavigationBar from './components/NavigationBar';
+import { VerticalContainer } from './components/Elements';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Navigation_T } from './Types/GlobalTypes';
 
 const Scroll = styled.div`
 	width: 100vw;
@@ -15,15 +20,31 @@ const Scroll = styled.div`
 
 function App() {
 	return (
-		<Scroll>
-			
-            <NextHourWeatherProvider>
-            <NextDayWeatherProvider>
-				<Weather />
-			</NextDayWeatherProvider>
-			</NextHourWeatherProvider>
+		<div>
+			<BrowserRouter>
+				<Scroll>
+					<UserLocationProvider>
+	
+						<Routes>
 
-		</Scroll>
+							<Route path={Navigation_T.WEATHER} element={
+								<NextHourWeatherProvider>
+								<NextDayWeatherProvider>
+									<Weather />
+								</NextDayWeatherProvider>
+								</NextHourWeatherProvider>
+							}>
+							</Route>
+
+							
+
+						</Routes>
+	
+					</UserLocationProvider>
+				</Scroll>
+				<NavigationBar />
+			</BrowserRouter>
+		</div>
 	);
 }
 

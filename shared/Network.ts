@@ -1,3 +1,4 @@
+import { CovidData } from "./CovidAPI";
 import { Location_coords } from "./OpenWeatherAPI";
 import { Location_T, Location_latlon, WeatherData } from "./Weather";
 
@@ -17,7 +18,25 @@ export interface error_Response {
 export declare type default_Response = success_Response | error_Response
 
 
+// Covid
+export interface today_Request {
 
+}
+export declare type today_Response = default_Response | {
+    status: true
+    result: CovidData
+}
+
+export interface recent_Request {
+    start: string
+}
+export declare type recent_Response = default_Response | {
+    status: true
+    result: CovidData[]
+}
+
+
+// Weather
 export interface weather_common_Request {
     Location: Location_T
     Position?: Location_latlon
