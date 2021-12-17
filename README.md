@@ -37,6 +37,7 @@ https://hub.docker.com/_/mongo
 
 ```
 cd server
+npm i
 npm start
 ```
 
@@ -49,6 +50,7 @@ npm start
 
 ```
 cd web
+npm i
 npm start
 ```
 
