@@ -4,11 +4,13 @@ import { ScrollElement, Emphasis, ScrollView } from "../../components/Elements";
 
 import { WeatherData } from "../../../../shared/Weather";
 import { LocationArray, Location_T, Conditions_T } from "../../Types/WeatherType";
-import { NextDayWeatherContext, NextHourWeatherContext } from "../../context/NextWeather";
-import { NextDayWeather, NextHourWeather } from "./NextWeather";
+import { NextDayWeatherContext, NextHourWeatherContext, TodayWeatherContext } from "../../context/WeatherContext";
+import { NextDayWeather, NextHourWeather } from "./WeatherElements";
 import { Map } from "../../components/Map";
 import API from "../../API";
-import { UserLocationContext } from "../../context/User";
+import { UserLocationContext } from "../../context/UserContext";
+import { useMountEffect } from "../../hooks/useMountEffect";
+import usePrevious from "../../hooks/usePrevious";
 
 
 
@@ -47,7 +49,7 @@ const Degree = styled.div`
 // }
 
 export function Weather() {
-    const [CurrentWeather, setCurrentWeather] = useState<WeatherData>();
+    const { TodayWeatherData, setTodayWeatherData } = useContext(TodayWeatherContext);
     const { setNextHourWeather } = useContext(NextHourWeatherContext);
     const { setNextDayWeather } = useContext(NextDayWeatherContext);
     const { UserLocation, setUserLocation } = useContext(UserLocationContext);
@@ -55,22 +57,41 @@ export function Weather() {
     // useEffect(() => {
     //     for (const Weather of NextWeather) console.log(Weather.timestamp);
     // }, [NextWeather]);
+    useEffect(() => console.log("LOG", UserLocation));
 
-    useEffect(() => {
+    useMountEffect(() => {
 
-        navigator.geolocation.getCurrentPosition(Pos => {
-            setUserLocation({
-                ...UserLocation,
-                Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude }
+        if (!UserLocation) {
+            navigator.geolocation.getCurrentPosition(Pos => {
+                setUserLocation({
+                    LocationName: Location_T.USERLOCATION,
+                    Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude }
+                });
+                console.log(Pos.coords.latitude, Pos.coords.longitude);
+                // UpdateWeathers();
             });
-            // console.log(Pos.coords.latitude, Pos.coords.longitude);
-        });
+        }
+        
 
 
         // setUserLocation({ LocationName: Location_T.USERLOCATION });
-    }, []);
+    });
+
+    // useEffect(() => {
+    //     if (UserLocation.LocationName === Location_T.USERLOCATION) {
+    //         console.log("UserLocation.Coords", UserLocation.Coords);
+    //         UpdateWeathers();
+    //     }
+    // }, [UserLocation.Coords]);
 
     useEffect(() => {
+        if (UserLocation && TodayWeatherData?.location != UserLocation.LocationName) {
+            console.log("UserLocation.LocationName", UserLocation.LocationName);
+            UpdateWeathers();
+        }
+    }, [UserLocation?.LocationName]);
+
+    function UpdateWeathers() {
 
         if (!UserLocation) return;
         if (UserLocation.LocationName === Location_T.USERLOCATION && !UserLocation.Coords) return;
@@ -83,7 +104,7 @@ export function Weather() {
         }
 
         API.weather.current({ ...Request }).then(res => {
-            if (res.status) setCurrentWeather(res.result);
+            if (res.status) setTodayWeatherData(res.result);
         }).catch(err => console.log(err));
 
 
@@ -95,7 +116,7 @@ export function Weather() {
             if (res.status) setNextDayWeather(res.result);
         }).catch(err => console.log(err));
 
-    }, [UserLocation]);
+    }
 
     function LocationSelectHandler(e: React.ChangeEvent<HTMLSelectElement>) {
         if (e.target.value) {
@@ -110,16 +131,17 @@ export function Weather() {
         <ScrollView>
 
             <Emphasis>
-                {CurrentWeather&&
-                    <>
-                        <LocationSelection onChange={LocationSelectHandler}>
-                            {LocationArray.map(K => <option selected={Location_T[K]===CurrentWeather.location} value={Location_T[K]} key={K}>{Location_T[K]}</option>)}
-                        </LocationSelection>
-                        <Degree>{CurrentWeather.temperture.current}°</Degree>
-                        <div>{CurrentWeather.condition.description}</div>
-                        <div>최고:{CurrentWeather.temperture.max}° 최저:{CurrentWeather.temperture.min}°</div>
-                    </>
-                }
+                    {TodayWeatherData?
+                        <>
+                            <LocationSelection onChange={LocationSelectHandler}>
+                                {LocationArray.map(K => <option selected={TodayWeatherData&& Location_T[K]===TodayWeatherData.location} value={Location_T[K]} key={K}>{Location_T[K]}</option>)}
+                            </LocationSelection>
+                            <Degree>{TodayWeatherData.temperture.current}°</Degree>
+                            <div>{TodayWeatherData.condition.description}</div>
+                            <div>최고:{TodayWeatherData.temperture.max}° 최저:{TodayWeatherData.temperture.min}°</div>
+                        </>:
+                        <div>불러오는 중</div>
+                    }
             </Emphasis>
 
 
@@ -127,7 +149,7 @@ export function Weather() {
             <NextDayWeather />
 
             <ScrollElement style={{padding: '1rem'}}>
-                {UserLocation.Coords&& <Map height={10} center={{...UserLocation.Coords}} />}
+                {UserLocation&&UserLocation.Coords&& <Map height={10} center={{...UserLocation.Coords}} />}
             </ScrollElement>
 
         </ScrollView>

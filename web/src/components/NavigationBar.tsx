@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { TiWeatherCloudy } from "react-icons/ti";
 import { RiAccountCircleFill, RiAccountCircleLine, RiCloudFill, RiCloudLine, RiSurgicalMaskFill, RiSurgicalMaskLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
+import { Navigation_T } from "../Types/GlobalTypes";
 
 const StyledNavigationBar = styled.div`
     width: 100vw;
@@ -16,12 +17,6 @@ const StyledNavigationBar = styled.div`
     bottom: 0;
     z-index: 999;
 `;
-
-enum Navigation_T {
-    WEATHER = "/",
-    COVID = "/covid",
-    ACCOUNT = "/account"
-}
 
 function NavigationBar() {
     const navigate = useNavigate();

@@ -23,7 +23,7 @@ export const LinearGraph = React.memo(function(props: LinearGraph_P) {
 
     useEffect(() => {
         
-        console.log(props.data);
+        // console.log(props.data);
         if (!previousData || !equalArray(previousData.data, props.data.data)) DrawGraph();
 
     }, [props.data]);
@@ -62,8 +62,8 @@ export const LinearGraph = React.memo(function(props: LinearGraph_P) {
             ctx.arc(x, y, 1, 0, Math.PI * 2);
             ctx.lineTo(x, y);
             
-            if (ShowNumber && DataUnit) {
-                ctx.fillText(`${Data.data[i]}${DataUnit}`, x, y-5);
+            if (ShowNumber) {
+                ctx.fillText(`${Data.data[i]}${DataUnit? DataUnit:""}`, x, y-5);
             }
         }
         ctx.stroke();

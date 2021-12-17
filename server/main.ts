@@ -2,8 +2,11 @@ import express from 'express';
 import Global from './Global';
 import Weather from "./routes/Weather";
 import Covid from "./routes/Covid";
+import Auth from "./routes/Auth";
+import "./model/DB";
 
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { Language, OpenWeatherMap, Units } from 'owm-onecall-api';
 import { CovidAPI } from './model/CovidAPI';
 
@@ -12,10 +15,12 @@ const App = express();
 
 App.use(cors());
 App.use(express.json());
+App.use(cookieParser());
 
 
 App.use("/weather", Weather);
 App.use("/covid", Covid);
+App.use("/auth", Auth);
 
 App.listen(PORT, () => {
     // Global.WeatherAPI = new OpenWeatherMap("21d5ef6432edd2d558243d66466ee62d", { lang: Language.Korean, units: Units.Metric });

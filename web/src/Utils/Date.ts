@@ -23,3 +23,13 @@ export function GetDay(Target: Date) {
 
     return result;
 }
+
+export function GetDate(Target: Date) {
+    const Now = new Date();
+    let result = "";
+
+    if (Target.getDate() === Now.getDate() && Target.getMonth() === Now.getMonth()) result = "오늘";
+    else result = Target.getDate()+"일";
+
+    return result;
+}

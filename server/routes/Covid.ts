@@ -8,7 +8,7 @@ router.post("/today", async (req, res: Response<today_Response>) => {
 
     try {
         if (Global.CovidAPI) {
-            const Result = await Global.CovidAPI.Day(new Date());
+            const Result = await (await Global.CovidAPI.Day(new Date())).shift();
             
             return res.send({
                 status: true,

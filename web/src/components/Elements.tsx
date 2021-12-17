@@ -61,6 +61,10 @@ export const ElementTitle = styled.span`
     /* padding-left: 1rem; */
     font-size: .7rem;
 `;
+export const Subtitle = styled.span`
+    color: rgba(255, 255, 255, .5);
+    font-size: .8rem;
+`;
 
 export const HorizontalDivider = styled.hr`
     width: 100%;
@@ -69,6 +73,7 @@ export const HorizontalDivider = styled.hr`
 `;
 
 export const VerticalContainer = styled.div`
+    min-width: 100%;
     display: inline-flex;
     flex-direction: column;
 `;
@@ -85,9 +90,11 @@ export const HorizontalElement = styled.div<{flex?: number}>`
     flex: ${({flex}) => flex!==undefined? flex : "auto"};
 `;
 
-// export function VerticalElement() {
 
-//     return (
-//         <div></div>
-//     )
-// }
+
+interface Loading_P { 
+    children?: any
+}
+export function LoadingComponent({ children }: Loading_P) {
+    return (<>{children? children:<span>로딩 중입니다.</span>}</>)
+}

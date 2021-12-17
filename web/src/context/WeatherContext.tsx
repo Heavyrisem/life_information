@@ -2,6 +2,27 @@ import React, { useEffect, useState } from "react";
 import { WeatherData } from "../../../shared/Weather";
 
 
+interface TodayWeatherContext {
+    TodayWeatherData?: WeatherData
+    setTodayWeatherData: (Weathers: WeatherData) => any
+}
+export const TodayWeatherContext = React.createContext<TodayWeatherContext>({
+    TodayWeatherData: undefined,
+    setTodayWeatherData: () => {}
+});
+export function TodayWeatherProvider({ children }: React.PropsWithChildren<React.ReactNode>) {
+    const [TodayWeatherData, setWeather] = useState<WeatherData>();
+
+    function setTodayWeatherData(Weather: WeatherData) {
+        Weather.timestamp = new Date(Weather.timestamp);
+
+        setWeather(Weather);
+    }
+
+    return <TodayWeatherContext.Provider value={{ TodayWeatherData, setTodayWeatherData }}>{children}</TodayWeatherContext.Provider>
+}
+
+
 interface NextHourWeatherContext {
     NextHourWeatherData: WeatherData[]
     setNextHourWeather: (Weathers: WeatherData[]) => any

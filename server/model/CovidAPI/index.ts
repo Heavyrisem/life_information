@@ -36,8 +36,13 @@ export class CovidAPI {
         if (!Response.data.response.body.items) throw "조회된 데이터가 없습니다.";
 
         if (!Array.isArray(Response.data.response.body.items.item)) {
+            if (Response.data.response.body.items.item.updateDt === "null") Response.data.response.body.items.item.updateDt = null;
+
             return [Response.data.response.body.items.item];
-        } else return Response.data.response.body.items.item;
+        } else return Response.data.response.body.items.item.map(V => {
+            if (V.updateDt === "null") V.updateDt = null;
+            return V;
+        });
     }
     
     // async LastWeek() {

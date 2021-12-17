@@ -60,7 +60,7 @@ export interface CovidData {
     // /** 누적 확진률 */	
     // ACC_DEF_RATE: number
     /** 등록일시분초 */	
-    createDt: string
+    createDt: Date | string
     /** 수정일시분초 */	
-    updateDt: string | null
+    updateDt: string | Date | null
 }
