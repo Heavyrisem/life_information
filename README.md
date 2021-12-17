@@ -4,11 +4,10 @@
 * Back-end
 * Front-end
 
-### 실행 방법
-* Back-end
+## 실행 방법 Back-end
 
 
-## Mongodb가 필요합니다.
+### Mongodb가 필요합니다.
 개발하면서 테스트 할 때에는 Docker Mongodb를 사용했습니다.
 https://hub.docker.com/_/mongo
 
@@ -24,8 +23,7 @@ npm start
 * 서버 기본 포트: 80
 * 기본 mongodb 주소: localhost:27017
 
-## 실행 방법
-* Front-end
+## 실행 방법 Front-end
 
 
 ```
