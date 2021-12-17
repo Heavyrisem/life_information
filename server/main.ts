@@ -13,7 +13,8 @@ import { CovidAPI } from './model/CovidAPI';
 const PORT = 80;
 const App = express();
 
-App.use(cors());
+// App.use(cors());
+App.use(cors({origin: ["*", "http://localhost:3000", "http://192.168.1.208:3000", "http://localhost:3001"], credentials: true}));
 App.use(express.json());
 App.use(cookieParser());
 

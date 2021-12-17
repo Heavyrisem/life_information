@@ -12,6 +12,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Navigation_T } from './Types/GlobalTypes';
 import { Covid } from './Routes/Covid/Covid';
 import { LastWeekCovidProvider, TodayCovidProvider } from './context/CovidContext';
+import Test from './Routes/Account/Test';
 
 const Scroll = styled.div`
 	width: 100vw;
@@ -42,6 +43,10 @@ function App() {
 								<Covid />
 							} />
 
+							<Route path={Navigation_T.ACCOUNT} element={
+								<Test />
+							} />
+
 						</Routes>
 
 					</LastWeekCovidProvider>
@@ -59,28 +64,28 @@ function App() {
 
 export default App;
 
-function sleep(t: number): Promise<void> {
-	return new Promise(resolve => {
-		setTimeout(() => {
-			resolve();
-		}, t);
-	})
-}
-const Test = React.memo(function () {
+// function sleep(t: number): Promise<void> {
+// 	return new Promise(resolve => {
+// 		setTimeout(() => {
+// 			resolve();
+// 		}, t);
+// 	})
+// }
+// const Test = React.memo(function () {
 
-	// const [s, ss] = useState<number>();
-	// const s = useMemo(() => {
-		// await sleep(1000);
-		// return 1;
-	// }, [])
+// 	// const [s, ss] = useState<number>();
+// 	// const s = useMemo(() => {
+// 		// await sleep(1000);
+// 		// return 1;
+// 	// }, [])
 
-	useEffect(() => {
-		setTimeout(() => {
-			// ss(2);
-		}, 1000);
-	}, []);
+// 	useEffect(() => {
+// 		setTimeout(() => {
+// 			// ss(2);
+// 		}, 1000);
+// 	}, []);
 
-	return (
-		<div>{}</div>
-	)
-})
+// 	return (
+// 		<div>{}</div>
+// 	)
+// })

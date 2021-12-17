@@ -10,12 +10,12 @@ import Config from "./Config.json";
 export default {
     generateAccessToken: (id: string) => {
         return jwt.sign({ id }, Config.ACCESS_TOKEN_SECRET, {
-            expiresIn: "30s"
+            expiresIn: "20s"
         })
     },
     generateRefreshToken: () => {
         return jwt.sign({ }, Config.REFRESH_TOKEN_SECRET, {
-            expiresIn: "3m"
+            expiresIn: "1d"
         })
     },
     authenticateAccessToken: (token: string): boolean => {

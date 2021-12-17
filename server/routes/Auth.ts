@@ -108,7 +108,7 @@ router.post("/refresh", async (req: Request<any,any,refresh_Request>, res: Respo
             res.cookie("AccessToken", NewAccessToken, { httpOnly: true });
             res.send({
                 status: true,
-                result: true
+                result: NewAccessToken
             })
         } else throw ERROR_T.INVAILD_PARAMS;
     } catch (err) {

@@ -88,5 +88,5 @@ export interface refresh_Request {
 }
 export declare type refresh_Response = default_Response | {
     status: true
-    result: boolean
+    result: string
 }

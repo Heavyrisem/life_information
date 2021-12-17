@@ -10,12 +10,12 @@ export default {
 
         if (AccessToken) {
             if (JWT.authenticateAccessToken(AccessToken)) return next();
-            else res.send({
+            else res.status(401).send({
                 status: false,
                 msg: ERROR_T.AUTH_EXPIRED
             })
         } else {
-            res.send({
+            res.status(401).send({
                 status: false,
                 msg: ERROR_T.AUTH_FAILD
             })

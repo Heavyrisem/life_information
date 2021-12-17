@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { Location_T } from '../Types/WeatherType';
-import { current_Response, default_Response, forecast_Request, forecast_Response, recent_Request, recent_Response, today_Response } from '../../../shared/Network';
+import { current_Response, default_Response, error_Response, forecast_Request, forecast_Response, login_Response, recent_Request, recent_Response, refresh_Response, register_Request, register_Response, today_Response } from '../../../shared/Network';
 import { Location_latlon } from '../../../shared/Weather';
 import { ERROR_T } from '../Types/GlobalTypes';
 
@@ -14,19 +14,24 @@ const instance = axios.create({
 instance.interceptors.response.use(response => {
     const Response = response.data as default_Response;
     if (!Response.status) {
-
-        if (Response.msg === ERROR_T.AUTH_EXPIRED) {
-
-        }
-
         throw Response.msg;
     }
 
     return response;
 }, error => {
-    // if (error.response && error.response.status === 401) {
-    //     throw new Error(DefaultError_Enum.NOT_AUTHED);
-    // }
+    const Config = (error as AxiosError).config;
+    const response = (error as AxiosError).response;
+
+    console.log(Config);
+    if (error.response && error.response.status === 401 && response) {
+        if ((response.data as error_Response).msg === ERROR_T.AUTH_EXPIRED) {
+            API.auth.refreshToken(Config.data.ID).then(res => {
+                if (res.status) Config.headers = { ...Config.headers, 'Cookie': res.result }
+                console.log(Config);
+                return axios.request(Config);
+            });
+        }
+    }
 
     // if ((error as Error).message == "Network Error") {
     //     throw new Error(DefaultError_Enum.SERVER_OFFLINE);
@@ -35,7 +40,7 @@ instance.interceptors.response.use(response => {
 });
 
 
-export default {
+const API = {
     weather: {
         forecast: (interval: "week" | "hour", params: { Location: Location_T, Position?: Location_latlon }): Promise<forecast_Response> => {
             return new Promise((resolve, reject) => {
@@ -63,7 +68,28 @@ export default {
             })
         }
     },
-    // auth: {
-    //     refreshToken: ()
-    // }
+    auth: {
+        register: (ID: string, PW: string): Promise<register_Response> => {
+            return new Promise((resolve, reject) => {
+                instance.post<register_Response>("/auth/register", { ID, PW }).then(res => resolve(res.data)).catch(reject);
+            })
+        },
+        login: (ID: string, PW: string): Promise<login_Response> => {
+            return new Promise((resolve, reject) => {
+                instance.post<login_Response>("/auth/login", { ID, PW }).then(res => resolve(res.data)).catch(reject);
+            })
+        },
+        refreshToken: (ID: string): Promise<refresh_Response> => {
+            return new Promise((resolve, reject) => {
+                instance.post("/auth/refresh", { ID }).then(res => resolve(res.data)).catch(reject);
+            })
+        },
+        test: (ID: string): Promise<any> => {
+            return new Promise((resolve, reject) => {
+                instance.post("/auth/test", {ID}).then(res => resolve(res.data)).catch(reject);
+            })
+        }
+    }
 }
+
+export default API;
