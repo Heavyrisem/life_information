@@ -22,13 +22,18 @@ instance.interceptors.response.use(response => {
     const Config = (error as AxiosError).config;
     const response = (error as AxiosError).response;
 
-    console.log(Config);
+    console.log(JSON.parse(Config.data).ID);
     if (error.response && error.response.status === 401 && response) {
         if ((response.data as error_Response).msg === ERROR_T.AUTH_EXPIRED) {
-            API.auth.refreshToken(Config.data.ID).then(res => {
+            API.auth.refreshToken(JSON.parse(Config.data).ID).then(res => {
                 if (res.status) Config.headers = { ...Config.headers, 'Cookie': res.result }
-                console.log(Config);
-                return axios.request(Config);
+                // console.log(Config);
+                return axios.request({
+                    method: Config.method,
+                    baseURL: Config.baseURL,
+                    data: Config.data,
+                    url: Config.url
+                });
             });
         }
     }
@@ -81,7 +86,10 @@ const API = {
         },
         refreshToken: (ID: string): Promise<refresh_Response> => {
             return new Promise((resolve, reject) => {
-                instance.post("/auth/refresh", { ID }).then(res => resolve(res.data)).catch(reject);
+                instance.post("/auth/refresh", { ID }).then(res => {
+                    // instance.defaults.headers.common['AccessToken']
+                    resolve(res.data);
+                }).catch(reject);
             })
         },
         test: (ID: string): Promise<any> => {
