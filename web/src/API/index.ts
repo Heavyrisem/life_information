@@ -19,24 +19,24 @@ instance.interceptors.response.use(response => {
 
     return response;
 }, error => {
-    const Config = (error as AxiosError).config;
-    const response = (error as AxiosError).response;
+    // const Config = (error as AxiosError).config;
+    // const response = (error as AxiosError).response;
 
-    console.log(JSON.parse(Config.data).ID);
-    if (error.response && error.response.status === 401 && response) {
-        if ((response.data as error_Response).msg === ERROR_T.AUTH_EXPIRED) {
-            API.auth.refreshToken(JSON.parse(Config.data).ID).then(res => {
-                if (res.status) Config.headers = { ...Config.headers, 'Cookie': res.result }
-                // console.log(Config);
-                return axios.request({
-                    method: Config.method,
-                    baseURL: Config.baseURL,
-                    data: Config.data,
-                    url: Config.url
-                });
-            });
-        }
-    }
+    // console.log(JSON.parse(Config.data).ID);
+    // if (error.response && error.response.status === 401 && response) {
+        // if ((response.data as error_Response).msg === ERROR_T.AUTH_EXPIRED) {
+        //     API.auth.refreshToken(JSON.parse(Config.data).ID).then(res => {
+        //         if (res.status) Config.headers = { ...Config.headers, 'Cookie': res.result }
+        //         // console.log(Config);
+        //         return axios.request({
+        //             method: Config.method,
+        //             baseURL: Config.baseURL,
+        //             data: Config.data,
+        //             url: Config.url
+        //         });
+        //     });
+        // }
+    // }
 
     // if ((error as Error).message == "Network Error") {
     //     throw new Error(DefaultError_Enum.SERVER_OFFLINE);
@@ -87,7 +87,6 @@ const API = {
         refreshToken: (ID: string): Promise<refresh_Response> => {
             return new Promise((resolve, reject) => {
                 instance.post("/auth/refresh", { ID }).then(res => {
-                    // instance.defaults.headers.common['AccessToken']
                     resolve(res.data);
                 }).catch(reject);
             })

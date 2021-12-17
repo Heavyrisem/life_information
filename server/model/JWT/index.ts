@@ -15,7 +15,7 @@ export default {
     },
     generateRefreshToken: () => {
         return jwt.sign({ }, Config.REFRESH_TOKEN_SECRET, {
-            expiresIn: "1d"
+            expiresIn: "1m"
         })
     },
     authenticateAccessToken: (token: string): boolean => {
@@ -39,6 +39,7 @@ export default {
 
             if (User && User.RefreshToken === token) {
                 const Result = jwt.verify(token, Config.REFRESH_TOKEN_SECRET);
+                console.log(Result);
                 return Boolean(Result);
             } return false;
         } catch (err) {

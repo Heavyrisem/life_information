@@ -8,6 +8,7 @@ export default function() {
     }, []);
 
     function Req() {
+        console.log("?");
         API.auth.test("test1").then(console.log);
     }
 

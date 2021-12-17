@@ -86,40 +86,6 @@ router.post("/register", async (req: Request<any,any,register_Request>, res: Res
     }
 })
 
-router.post("/refresh", async (req: Request<any,any,refresh_Request>, res: Response<refresh_Response>) => {
-    const { ID } = req.body;
-    console.log(req.cookies);
-    const { AccessToken, RefreshToken } = req.cookies;
-
-    try {
-        if (AccessToken && RefreshToken && ID) {
-            let NewAccessToken = AccessToken;
-            
-            const Access = JWT.authenticateAccessToken(AccessToken);
-            
-            if (!Access) {
-                const Refresh = await JWT.authenticateRefreshToken(ID, RefreshToken);
-
-                if (Refresh) NewAccessToken = JWT.generateAccessToken(ID);
-                else throw ERROR_T.AUTH_FAILD;
-            }
-
-            console.log("New Token", NewAccessToken);
-            res.cookie("AccessToken", NewAccessToken, { httpOnly: true });
-            res.send({
-                status: true,
-                result: NewAccessToken
-            })
-        } else throw ERROR_T.INVAILD_PARAMS;
-    } catch (err) {
-        console.log(err);
-        res.send({
-            status: false,
-            msg: err+""
-        })
-    }
-});
-
 router.post("/test", Auth.AuthJWT, (req, res) => {
 
     res.send({status: true, msg: "AUTHED"});

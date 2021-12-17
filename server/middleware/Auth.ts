@@ -1,24 +1,32 @@
 import { NextFunction, Request, Response } from "express";
 import { default_Response, ERROR_T } from "../../shared/Network";
 import JWT from "../model/JWT";
+import Utils from "../model/Utils";
 
 
 
 export default {
-    AuthJWT: (req: Request, res: Response<default_Response>, next: NextFunction) => {
-        const { AccessToken } = req.cookies;
+    AuthJWT: async (req: Request, res: Response<default_Response>, next: NextFunction) => {
+        const { ID } = req.body;
+        const { AccessToken, RefreshToken } = req.cookies;
 
-        if (AccessToken) {
-            if (JWT.authenticateAccessToken(AccessToken)) return next();
-            else res.status(401).send({
-                status: false,
-                msg: ERROR_T.AUTH_EXPIRED
-            })
-        } else {
-            res.status(401).send({
-                status: false,
-                msg: ERROR_T.AUTH_FAILD
-            })
+        try {
+            if (AccessToken) {
+                if (JWT.authenticateAccessToken(AccessToken)) return next();
+                else {
+                    if (!RefreshToken) throw ERROR_T.AUTH_FAILD;
+                    const RefreshisVaild = await JWT.authenticateRefreshToken(ID, RefreshToken);
+                    
+                    if (RefreshisVaild) {
+                        console.log("NEW token generated");
+                        res.cookie("AccessToken", JWT.generateAccessToken(ID));
+                        return next();
+                    } else throw ERROR_T.AUTH_EXPIRED;
+                }
+            } else throw ERROR_T.AUTH_FAILD;
+        } catch (err) {
+            console.log(err);
+            res.status(401).send(Utils.ErrorResponse(err));
         }
     }
 }
