@@ -7,14 +7,19 @@ export interface UserLocation {
 
 
 // DB
-export interface UserData {
+export interface UserSetting_DB {
+    Location: {
+        name: Location_T
+        // coord: Location_latlon
+    }
+}
+export interface UserData_DB {
     ID: string
     PW: string
-    Setting: {
-        Location: {
-            name: Location_T
-            // coord: Location_latlon
-        }
-    }
     RefreshToken?: string
+    Setting: UserSetting_DB
+}
+
+
+export interface UserData_T extends Omit<UserData_DB, "PW" | "RefreshToken"> {
 }

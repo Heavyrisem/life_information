@@ -51,7 +51,7 @@ export function WeeklyCovidTrends() {
                 <LinearGraph parent={ref} Height={100} RealHeightPercent={70} data={{
                     labels: LastWeekCovidData.map(D => D.decideCnt.toString()),
                     data: LastWeekCovidData.map(D => D.decideCnt)
-                }} ShowNumber />
+                }} DataUnit={"명"} ShowNumber />
             }
             </LoadingComponent>
 

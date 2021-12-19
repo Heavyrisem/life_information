@@ -13,8 +13,14 @@ const StyledNavigationBar = styled.div`
     display: flex;
     background: white;
 
+    /* border-radius: 10rem; */
+    /* margin: auto; */
+    /* margin-bottom: 1rem; */
+
     position: sticky;
-    bottom: 0;
+    padding: .3rem 1rem;
+    box-sizing: border-box;
+    bottom: 0rem;
     z-index: 999;
 `;
 
@@ -23,7 +29,8 @@ function NavigationBar() {
     const IconStyle: React.CSSProperties = {
         color: 'black',
         fontSize: '2rem',
-        margin: 'auto'
+        margin: 'auto',
+        display: 'flex'
     }
 
     return (

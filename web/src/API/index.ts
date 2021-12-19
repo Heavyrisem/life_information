@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { Location_T } from '../Types/WeatherType';
-import { current_Response, default_Response, error_Response, forecast_Request, forecast_Response, login_Response, recent_Request, recent_Response, refresh_Response, register_Request, register_Response, today_Response } from '../../../shared/Network';
+import { current_Response, default_Response, error_Response, forecast_Request, forecast_Response, login_Response, logout_Response, recent_Request, recent_Response, refresh_Response, register_Request, register_Response, setting_Response, today_Response } from '../../../shared/Network';
 import { Location_latlon } from '../../../shared/Weather';
 import { ERROR_T } from '../Types/GlobalTypes';
+import { UserSetting_DB } from '../../../shared/Types';
 
 const instance = axios.create({
     baseURL: "http://localhost",
@@ -19,28 +20,18 @@ instance.interceptors.response.use(response => {
 
     return response;
 }, error => {
-    // const Config = (error as AxiosError).config;
-    // const response = (error as AxiosError).response;
+    const err = error as AxiosError;
 
-    // console.log(JSON.parse(Config.data).ID);
-    // if (error.response && error.response.status === 401 && response) {
-        // if ((response.data as error_Response).msg === ERROR_T.AUTH_EXPIRED) {
-        //     API.auth.refreshToken(JSON.parse(Config.data).ID).then(res => {
-        //         if (res.status) Config.headers = { ...Config.headers, 'Cookie': res.result }
-        //         // console.log(Config);
-        //         return axios.request({
-        //             method: Config.method,
-        //             baseURL: Config.baseURL,
-        //             data: Config.data,
-        //             url: Config.url
-        //         });
-        //     });
-        // }
+
+    // if (err.response && err.response.status === 401) {
+
+    //     throw (err.response.data as error_Response).msg;
+
     // }
 
-    // if ((error as Error).message == "Network Error") {
-    //     throw new Error(DefaultError_Enum.SERVER_OFFLINE);
-    // }
+    if (err.response && err.response.data) {
+        throw (err.response.data as error_Response).msg;
+    }
     throw error;
 });
 
@@ -73,27 +64,37 @@ const API = {
             })
         }
     },
-    auth: {
+    account: {
         register: (ID: string, PW: string): Promise<register_Response> => {
             return new Promise((resolve, reject) => {
-                instance.post<register_Response>("/auth/register", { ID, PW }).then(res => resolve(res.data)).catch(reject);
+                instance.post<register_Response>("/account/register", { ID, PW }).then(res => resolve(res.data)).catch(reject);
             })
         },
         login: (ID: string, PW: string): Promise<login_Response> => {
             return new Promise((resolve, reject) => {
-                instance.post<login_Response>("/auth/login", { ID, PW }).then(res => resolve(res.data)).catch(reject);
+                instance.post<login_Response>("/account/login", { ID, PW }).then(res => resolve(res.data)).catch(reject);
             })
         },
         refreshToken: (ID: string): Promise<refresh_Response> => {
             return new Promise((resolve, reject) => {
-                instance.post("/auth/refresh", { ID }).then(res => {
+                instance.post("/account/refresh", { ID }).then(res => {
                     resolve(res.data);
                 }).catch(reject);
             })
         },
+        logout: (): Promise<logout_Response> => {
+            return new Promise((resolve, reject) => {
+                instance.post("/account/logout").then(res => resolve(res.data)).catch(reject);
+            })
+        },
+        updateSetting: (ID: string, setting: UserSetting_DB): Promise<setting_Response> => {
+            return new Promise((resolve, reject) => {
+                instance.post("/account/setting", { ID, setting }).then(res => resolve(res.data)).catch(reject);
+            })
+        },
         test: (ID: string): Promise<any> => {
             return new Promise((resolve, reject) => {
-                instance.post("/auth/test", {ID}).then(res => resolve(res.data)).catch(reject);
+                instance.post("/account/test", {ID}).then(res => resolve(res.data)).catch(reject);
             })
         }
     }

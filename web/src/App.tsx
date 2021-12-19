@@ -3,16 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 import { Weather } from './Routes/Weather/Weather';
 import styled from 'styled-components';
+import { CookiesProvider } from "react-cookie";
 
 import { NextDayWeatherProvider, NextHourWeatherProvider, TodayWeatherProvider } from './context/WeatherContext';
-import { UserLocationProvider } from './context/UserContext';
+import { UserDataProvider, UserLocationProvider } from './context/UserContext';
 import NavigationBar from './components/NavigationBar';
-import { VerticalContainer } from './components/Elements';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Navigation_T } from './Types/GlobalTypes';
 import { Covid } from './Routes/Covid/Covid';
 import { LastWeekCovidProvider, TodayCovidProvider } from './context/CovidContext';
-import Test from './Routes/Account/Test';
+import { Account } from './Routes/Account/Account';
 
 const Scroll = styled.div`
 	width: 100vw;
@@ -26,6 +26,8 @@ function App() {
 		<div>
 			<BrowserRouter>
 				<Scroll>
+					<CookiesProvider>
+					<UserDataProvider>
 					<UserLocationProvider>
 					<TodayWeatherProvider>
 					<NextHourWeatherProvider>
@@ -44,7 +46,7 @@ function App() {
 							} />
 
 							<Route path={Navigation_T.ACCOUNT} element={
-								<Test />
+								<Account />
 							} />
 
 						</Routes>
@@ -55,6 +57,8 @@ function App() {
 					</NextHourWeatherProvider>
 					</TodayWeatherProvider>
 					</UserLocationProvider>
+					</UserDataProvider>
+					</CookiesProvider>
 				</Scroll>
 				<NavigationBar />
 			</BrowserRouter>

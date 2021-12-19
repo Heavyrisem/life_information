@@ -96,5 +96,5 @@ interface Loading_P {
     children?: any
 }
 export function LoadingComponent({ children }: Loading_P) {
-    return (<>{children? children:<span>로딩 중입니다.</span>}</>)
+    return (<>{children!=undefined? children:<span>로딩 중입니다.</span>}</>)
 }

@@ -37,8 +37,6 @@ const Cursor = styled.div<Cursor_P>`
     /* padding-bottom: ${({left}) => left+"%"}; */
 `;
 
-
-// DEV
 interface HorizonTalRangeGraphData {
     min: number
     max: number
@@ -47,14 +45,6 @@ interface HorizonTalRangeGraphData {
         max: number
     }
 }
-// const Data: HorizonTalRangeGraphData = {
-//     min: 10,
-//     max: 15,
-//     range: {
-//         max: 30,
-//         min: 0
-//     }
-// }
 
 interface HorizonTalRangeGraph_P extends BackGroundBar_P {
     data: HorizonTalRangeGraphData

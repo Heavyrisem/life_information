@@ -2,7 +2,7 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import DB from "../DB";
 
 import { ERROR_T } from "../../../shared/Network";
-import { UserData } from "../../../shared/Types";
+import { UserData_DB } from "../../../shared/Types";
 
 import Config from "./Config.json";
 
@@ -35,7 +35,7 @@ export default {
         try {
             const db = await DB.GetConnection();
 
-            const User = await db.collection('Users').findOne<UserData>({ ID });
+            const User = await db.collection('Users').findOne<UserData_DB>({ ID });
 
             if (User && User.RefreshToken === token) {
                 const Result = jwt.verify(token, Config.REFRESH_TOKEN_SECRET);

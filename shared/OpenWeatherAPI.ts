@@ -1,133 +1,6 @@
 import { Location_latlon } from "./Weather";
 
 
-interface CurrentWeather {
-    dt: number,
-    sunrise: number,
-    sunset: number,
-    temp: number,
-    feels_like: number,
-    pressure: number,
-    humidity: number,
-    dew_point: number,
-    uvi: number,
-    clouds: number,
-    visibility: number,
-    wind_speed: number,
-    wind_deg: number,
-    wind_gust: number,
-    weather: Weather[]
-}
-
-// interface minutely
-
-interface Weather {
-    id: number
-    main: Conditions_T
-    description: string
-    icon: string
-}
-
-                     
-
-export interface WeatherForecastAPI_Response {
-    cod: number
-    message: number
-    cnt: number
-    list: WeatherForecast[]
-    city: {
-        id: number
-        name: string
-        coord: {
-        lat: number
-        lon: number
-        }
-        country: string
-        timezone: number
-        sunrise: number
-        sunset: number
-    }
-}
-                       
-
-
-
-
-export interface WeatherForecast {
-    dt: number
-    main: {
-        temp: number
-        feels_like: number
-        temp_min: number
-        temp_max: number
-        pressure: number
-        sea_level: number
-        grnd_level: number
-        humidity: number
-        temp_kf: number
-    }
-    weather: Weather[]
-    clouds: {
-        all: number
-    }
-    wind: {
-        speed: number
-        deg: number
-        gust: number
-    }
-    visibility: number
-    pop: number
-    rain?: {
-        "1h"?: number
-        "3h"?: number
-    }
-    sys: {
-        pod: string
-    }
-    dt_txt: string
-}
-
-
-export interface WeatherInformation_Response {
-    coord: { lon: number, lat: number }
-    weather: Weather[]
-    base: string
-    main: {
-        temp: number
-        feels_like: number
-        temp_min: number
-        temp_max: number
-        pressure: number
-        humidity: number
-        sea_level: number
-        grnd_level: number
-    }
-    visibility: number
-    wind: {
-        speed: number
-        deg: number
-        gust: number
-    }
-    clouds: { all: number }
-    dt: number
-    sys: {
-        type: number
-        id: number
-        country: string
-        sunrise: number
-        sunset: number
-    }
-    rain?: {
-        "1h"?: number
-        "3h"?: number
-    }
-    timezone: number
-    id: number
-    name: string
-    cod: number
-}
-
-
 export const Location_coords: {[index: string]: Location_latlon} = {
     SEOUL: { lat: 37.56826, lon: 126.977829 },
     BUSAN: { lat: 35.133331, lon: 129.050003 },
@@ -165,3 +38,136 @@ export enum Conditions_T {
     Clear = "Clear",
     Clouds = "Clouds"
 }
+
+
+
+
+
+
+// OpenWeatherAPI NetWork Types
+
+// interface CurrentWeather {
+//     dt: number,
+//     sunrise: number,
+//     sunset: number,
+//     temp: number,
+//     feels_like: number,
+//     pressure: number,
+//     humidity: number,
+//     dew_point: number,
+//     uvi: number,
+//     clouds: number,
+//     visibility: number,
+//     wind_speed: number,
+//     wind_deg: number,
+//     wind_gust: number,
+//     weather: Weather[]
+// }
+
+// // interface minutely
+
+// interface Weather {
+//     id: number
+//     main: Conditions_T
+//     description: string
+//     icon: string
+// }
+
+                     
+
+// export interface WeatherForecastAPI_Response {
+//     cod: number
+//     message: number
+//     cnt: number
+//     list: WeatherForecast[]
+//     city: {
+//         id: number
+//         name: string
+//         coord: {
+//         lat: number
+//         lon: number
+//         }
+//         country: string
+//         timezone: number
+//         sunrise: number
+//         sunset: number
+//     }
+// }
+                       
+
+
+
+
+// export interface WeatherForecast {
+//     dt: number
+//     main: {
+//         temp: number
+//         feels_like: number
+//         temp_min: number
+//         temp_max: number
+//         pressure: number
+//         sea_level: number
+//         grnd_level: number
+//         humidity: number
+//         temp_kf: number
+//     }
+//     weather: Weather[]
+//     clouds: {
+//         all: number
+//     }
+//     wind: {
+//         speed: number
+//         deg: number
+//         gust: number
+//     }
+//     visibility: number
+//     pop: number
+//     rain?: {
+//         "1h"?: number
+//         "3h"?: number
+//     }
+//     sys: {
+//         pod: string
+//     }
+//     dt_txt: string
+// }
+
+
+// export interface WeatherInformation_Response {
+//     coord: { lon: number, lat: number }
+//     weather: Weather[]
+//     base: string
+//     main: {
+//         temp: number
+//         feels_like: number
+//         temp_min: number
+//         temp_max: number
+//         pressure: number
+//         humidity: number
+//         sea_level: number
+//         grnd_level: number
+//     }
+//     visibility: number
+//     wind: {
+//         speed: number
+//         deg: number
+//         gust: number
+//     }
+//     clouds: { all: number }
+//     dt: number
+//     sys: {
+//         type: number
+//         id: number
+//         country: string
+//         sunrise: number
+//         sunset: number
+//     }
+//     rain?: {
+//         "1h"?: number
+//         "3h"?: number
+//     }
+//     timezone: number
+//     id: number
+//     name: string
+//     cod: number
+// }

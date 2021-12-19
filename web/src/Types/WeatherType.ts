@@ -19,24 +19,6 @@ export enum Location_T {
     USERLOCATION = "사용자의 위치"
 }
 
-export enum Conditions_T {
-    Thunderstorm = "Thunderstorm",
-    Drizzle = "Drizzle",
-    Rain = "Rain",
-    Snow = "Snow",
-    Mist = "Mist",
-    Smoke = "Smoke",
-    Haze = "Haze",
-    Dust = "Dust",
-    Fog = "Fog",
-    Sand = "Sand",
-    Ash = "Ash",
-    Squall = "Squall",
-    Tornado = "Tornado",
-    Clear = "Clear",
-    Clouds = "Clouds"
-}
-
 export const LocationArray = enumKeys(Location_T);
 
 function enumKeys<E>(e: E): (keyof E)[] {

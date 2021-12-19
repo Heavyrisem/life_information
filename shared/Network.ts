@@ -1,5 +1,6 @@
 import { CovidData } from "./CovidAPI";
 import { Location_coords } from "./OpenWeatherAPI";
+import { UserData_T, UserSetting_DB } from "./Types";
 import { Location_T, Location_latlon, WeatherData } from "./Weather";
 
 
@@ -8,7 +9,7 @@ export enum ERROR_T {
     AUTH_EXPIRED = "인증이 만료되었습니다.",
     AUTH_FAILD = "인증에 실패했습니다.",
     USER_NOT_FOUND = "사용자를 찾을 수 없습니다.",
-    USER_ALREADY_Exist = "사용자가 이미 존재합니다."
+    USER_ALREADY_EXIST = "사용자가 이미 존재합니다."
 }
 
 export interface success_Response {
@@ -71,7 +72,7 @@ export interface login_Request {
 }
 export declare type login_Response = default_Response | {
     status: true
-    result: boolean
+    result: UserData_T
 }
 
 export interface register_Request {
@@ -80,7 +81,7 @@ export interface register_Request {
 }
 export declare type register_Response = default_Response | {
     status: true
-    result: boolean
+    result: UserData_T
 }
 
 export interface refresh_Request {
@@ -89,4 +90,20 @@ export interface refresh_Request {
 export declare type refresh_Response = default_Response | {
     status: true
     result: string
+}
+
+export interface logout_Request {
+}
+export declare type logout_Response = default_Response | {
+    status: true
+    result: boolean
+}
+
+export interface setting_Request {
+    ID: string
+    setting: UserSetting_DB
+}
+export declare type setting_Response = default_Response | {
+    status: true
+    result: boolean
 }

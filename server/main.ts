@@ -2,7 +2,7 @@ import express from 'express';
 import Global from './Global';
 import Weather from "./routes/Weather";
 import Covid from "./routes/Covid";
-import Auth from "./routes/Auth";
+import Account from "./routes/Account";
 import "./model/DB";
 
 import cors from 'cors';
@@ -23,7 +23,7 @@ App.use(cookieParser());
 
 App.use("/weather", Weather);
 App.use("/covid", Covid);
-App.use("/auth", Auth);
+App.use("/account", Account);
 
 App.listen(PORT, () => {
     // Global.WeatherAPI = new OpenWeatherMap("21d5ef6432edd2d558243d66466ee62d", { lang: Language.Korean, units: Units.Metric });
