@@ -14,8 +14,8 @@ __취소선은 구현 완료__
     * ~~지난 일주일 추세 차트~~
     * 감염자가 가장 많은 TOP3지역 => __추가 기능__
 * 로그인
-    * 로그인/로그아웃
-    * 계정 관리 페이지
+    * ~~로그인/로그아웃~~
+    * ~~계정 관리 페이지~~
     * WYSIWYG 에디터로 사용자 소개 페이지 편집
 * 가이드
 
@@ -34,6 +34,22 @@ https://hub.docker.com/_/mongo
 
 데이터베이스 연결 설정 파일 수정 `.../server/models/DB/Config.json`
 
+```
+// 예시
+{
+    "host": "localhost:27017",
+    "DataBase": "life_information"
+}
+```
+
+API 키 파일 수정 `.../server/APIKEY.json`
+```
+// 예시
+{
+    "Weather": "",
+    "Covid": ""
+}
+```
 
 ```
 cd server
