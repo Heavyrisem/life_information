@@ -69,10 +69,10 @@ export function Login() {
             if (!(ID && PW)) return;
             switch (Type) {
                 case "LOGIN": {
-                    API.account.login(ID, PW).then(res => setUserData(res.status&& res.result)).catch(console.log); break;
+                    API.account.login(ID, PW).then(res => setUserData(res.status&& res.result)).catch(alert); break;
                 }
                 case "REGISTER": {
-                    API.account.register(ID, PW).then(res => setUserData(res.status&& res.result)).catch(console.log); break;
+                    API.account.register(ID, PW).then(res => setUserData(res.status&& res.result)).catch(alert); break;
                 }
             }
         }

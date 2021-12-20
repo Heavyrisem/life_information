@@ -40,7 +40,7 @@ export function Profile() {
 
 
     function LogoutHandler() {
-        API.account.logout().then(res => res.status&& setUserData(undefined)).catch(console.log);
+        API.account.logout().then(res => res.status&& setUserData(undefined)).catch(alert);
     }
 
     function LocationSettingHandler(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -53,7 +53,7 @@ export function Profile() {
             }
         }
 
-        API.account.updateSetting(UserData.ID, setting).then(res => res.status&& setUserData({...UserData, Setting:setting})).catch(console.log);
+        API.account.updateSetting(UserData.ID, setting).then(res => res.status&& setUserData({...UserData, Setting:setting})).catch(alert);
     }
 
     return (
@@ -75,9 +75,9 @@ export function Profile() {
 
                         <VerticalElement style={SettingFieldStyle}>
                             <SettingLabel>지역</SettingLabel>
-                            <SettingSelect onChange={LocationSettingHandler}>
+                            <SettingSelect onChange={LocationSettingHandler} defaultValue={UserData.Setting.Location.name}>
                                 {LocationArray.map((Loc, i) => (
-                                    <option selected={UserData.Setting.Location.name===Location_T[Loc]} value={Location_T[Loc]} key={i}>{Location_T[Loc]}</option>
+                                    <option value={Location_T[Loc]} key={i}>{Location_T[Loc]}</option>
                                 ))}
                             </SettingSelect>
                         </VerticalElement>

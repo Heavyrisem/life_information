@@ -25,10 +25,10 @@ export function Covid() {
     useEffect(() => {
 
         if (!TodayCovidData)
-            API.covid.today().then(res => res.status&& setTodayCovidData(res.result)).catch(err => console.log(err));
+            API.covid.today().then(res => res.status&& setTodayCovidData(res.result)).catch(alert);
 
         if (!LastWeekCovidData.length)
-            API.covid.lastWeek().then(res => res.status&& setLastWeekCovidData(res.result)).catch(err => console.log(err));
+            API.covid.lastWeek().then(res => res.status&& setLastWeekCovidData(res.result)).catch(alert);
 
     }, []);
     

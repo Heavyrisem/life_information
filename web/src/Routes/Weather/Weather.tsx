@@ -75,17 +75,16 @@ export function Weather() {
 
         API.weather.current({ ...Request }).then(res => {
             if (res.status) setTodayWeatherData(res.result);
-            if (res.status) console.log(res.result);
-        }).catch(err => console.log(err));
+        }).catch(alert);
 
 
         API.weather.forecast("hour", { ...Request }).then(res => {
             if (res.status) setNextHourWeather(res.result);
-        }).catch(err => console.log(err));
+        }).catch(alert);
 
         API.weather.forecast("week", { ...Request }).then(res => {
             if (res.status) setNextDayWeather(res.result);
-        }).catch(err => console.log(err));
+        }).catch(alert);
 
     }
 
@@ -104,8 +103,8 @@ export function Weather() {
             <Emphasis>
                     {TodayWeatherData?
                         <>
-                            <LocationSelection onChange={LocationSelectHandler}>
-                                {LocationArray.map(K => <option selected={TodayWeatherData&& Location_T[K]===TodayWeatherData.location} value={Location_T[K]} key={K}>{Location_T[K]}</option>)}
+                            <LocationSelection onChange={LocationSelectHandler} defaultValue={TodayWeatherData.location}>
+                                {LocationArray.map(K => <option value={Location_T[K]} key={K}>{Location_T[K]}</option>)}
                             </LocationSelection>
                             <Degree>{TodayWeatherData.temperture.current}°</Degree>
                             <div>{TodayWeatherData.condition.description}</div>
