@@ -1,4 +1,4 @@
-import { CovidData } from "./CovidAPI";
+import { CovidData, CovidSidoData } from "./CovidAPI";
 import { Location_coords } from "./OpenWeatherAPI";
 import { UserData_T, UserSetting_DB } from "./Types";
 import { Location_T, Location_latlon, WeatherData } from "./Weather";
@@ -38,6 +38,14 @@ export interface recent_Request {
 export declare type recent_Response = default_Response | {
     status: true
     result: CovidData[]
+}
+
+export interface sido_Request {
+    start: Date
+}
+export declare type sido_Response = default_Response | {
+    status: true
+    result: CovidSidoData[]
 }
 
 

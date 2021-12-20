@@ -22,7 +22,7 @@ export interface CovidAPI_Request {
 }
 
 
-export interface CovidAPI_Response {
+export interface CovidAPI_Response<T> {
     response: {
         header: {
             /** 결과코드 */
@@ -32,7 +32,7 @@ export interface CovidAPI_Response {
         }
         body: {
             items: {
-                item: CovidData | CovidData[]
+                item: T
             }
         }
         /** 한 페이지 결과 수 */
@@ -43,6 +43,20 @@ export interface CovidAPI_Response {
         totalCount: number
     }
 }
+
+// export interface CovidAPI_normal_Response extends CovidAPI_default_Response {
+//     response: {
+        
+//     }
+// }
+
+// export interface CovidAPI_sido_Response extends CovidAPI_default_Response {
+//     body: {
+//         items: {
+//             item: CovidSidoData[]
+//         }
+//     }
+// }
 
 export interface CovidData {
     /** 게시글번호(감염현황 고유값) */	
@@ -57,10 +71,39 @@ export interface CovidData {
     deathCnt: number
     /** 누적 검사 수 */	
     accExamCnt: number
-    // /** 누적 확진률 */	
-    // ACC_DEF_RATE: number
     /** 등록일시분초 */	
     createDt: Date | string
     /** 수정일시분초 */	
     updateDt: string | Date | null
+}
+
+export interface CovidSidoData {
+    /** 게시글번호(국내 시도별 발생현황 고유값) */
+    seq: number
+    /** 등록일시분초 */
+    createDt: Date | string
+    /** 사망자 수 */
+    deathCnt: number
+    /** 시도명(한글) */
+    gubun: string
+    /** 시도명(중국어) */
+    gubunCn: string
+    /** 시도명(영어) */
+    gubunEn: string
+    /** 전일대비 증감 수 */
+    incDec: number
+    /** 격리 해제 수 */
+    isolClearCnt: number
+    /** 10만명당 발생률 */
+    qurRate: number
+    /** 기준일시 */
+    stdDay: Date | string
+    /** 수정일시분초 */
+    updateDt: string | Date | null
+    /** 확진자 수 */
+    defCnt: number
+    /** 해외유입 수 */
+    overFlowCnt: number
+    /** 지역발생 수 */
+    localOccCnt: number
 }
