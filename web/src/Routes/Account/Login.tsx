@@ -2,6 +2,7 @@ import React, { useContext, useRef } from "react";
 import styled from "styled-components";
 import API from "../../API";
 import { UserDataContext } from "../../context/UserContext";
+import useError from "../../hooks/useError";
 
 
 const LoginView = styled.div`
@@ -56,6 +57,7 @@ const ButtonContainer = styled.div`
 `;
 
 export function Login() {
+    const ErrorHandler = useError();
     const { setUserData } = useContext(UserDataContext);
     const IDref = useRef<HTMLInputElement>(null);
     const PWref = useRef<HTMLInputElement>(null);
@@ -69,10 +71,10 @@ export function Login() {
             if (!(ID && PW)) return;
             switch (Type) {
                 case "LOGIN": {
-                    API.account.login(ID, PW).then(res => setUserData(res.status&& res.result)).catch(alert); break;
+                    API.account.login(ID, PW).then(res => setUserData(res.status&& res.result)).catch(ErrorHandler); break;
                 }
                 case "REGISTER": {
-                    API.account.register(ID, PW).then(res => setUserData(res.status&& res.result)).catch(alert); break;
+                    API.account.register(ID, PW).then(res => setUserData(res.status&& res.result)).catch(ErrorHandler); break;
                 }
             }
         }

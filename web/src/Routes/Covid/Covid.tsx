@@ -6,6 +6,7 @@ import { AdditionalData, WeeklyCovidTrends } from "./CovidElements";
 
 import { LastWeekCovidContext, TodayCovidContext } from "../../context/CovidContext";
 import API from "../../API";
+import useError from "../../hooks/useError";
 
 
 const StyledDecideCnt = styled.div`
@@ -19,16 +20,17 @@ const StyledTime = styled.div`
 
 
 export function Covid() {
+	const ErrorHandler = useError();
     const { TodayCovidData, setTodayCovidData } = useContext(TodayCovidContext);
     const { LastWeekCovidData, setLastWeekCovidData } = useContext(LastWeekCovidContext);
 
     useEffect(() => {
 
         if (!TodayCovidData)
-            API.covid.today().then(res => res.status&& setTodayCovidData(res.result)).catch(alert);
+            API.covid.today().then(res => res.status&& setTodayCovidData(res.result)).catch(ErrorHandler);
 
         if (!LastWeekCovidData.length)
-            API.covid.lastWeek().then(res => res.status&& setLastWeekCovidData(res.result)).catch(alert);
+            API.covid.lastWeek().then(res => res.status&& setLastWeekCovidData(res.result)).catch(ErrorHandler);
 
     }, []);
     

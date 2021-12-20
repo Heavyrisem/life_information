@@ -5,6 +5,7 @@ import { UserSetting_DB } from "../../../../shared/Types";
 import API from "../../API";
 import { ElementTitle, Emphasis, HorizontalDivider, ScrollElement, ScrollView, VerticalContainer, VerticalElement } from "../../components/Elements";
 import { UserDataContext } from "../../context/UserContext";
+import useError from "../../hooks/useError";
 import { LocationArray, Location_T } from "../../Types/WeatherType";
 
 const UserName = styled.div`
@@ -28,6 +29,7 @@ const SettingSelect = styled.select`
 `;
 
 export function Profile() {
+    const ErrorHandler = useError();
     const { UserData, setUserData } = useContext(UserDataContext);
 
     const SettingFieldStyle: React.CSSProperties = {
@@ -40,7 +42,7 @@ export function Profile() {
 
 
     function LogoutHandler() {
-        API.account.logout().then(res => res.status&& setUserData(undefined)).catch(alert);
+        API.account.logout().then(res => res.status&& setUserData(undefined)).catch(ErrorHandler);
     }
 
     function LocationSettingHandler(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -53,7 +55,7 @@ export function Profile() {
             }
         }
 
-        API.account.updateSetting(UserData.ID, setting).then(res => res.status&& setUserData({...UserData, Setting:setting})).catch(alert);
+        API.account.updateSetting(UserData.ID, setting).then(res => res.status&& setUserData({...UserData, Setting:setting})).catch(ErrorHandler);
     }
 
     return (

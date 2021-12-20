@@ -8,6 +8,7 @@ import { NextDayWeather, NextHourWeather } from "./WeatherElements";
 import { Map } from "../../components/Map";
 import API from "../../API";
 import { UserDataContext, UserLocationContext } from "../../context/UserContext";
+import useError from "../../hooks/useError";
 
 
 
@@ -30,6 +31,7 @@ const Degree = styled.div`
 
 
 export function Weather() {
+    const ErrorHandler = useError();
     const { TodayWeatherData, setTodayWeatherData } = useContext(TodayWeatherContext);
     const { setNextHourWeather } = useContext(NextHourWeatherContext);
     const { setNextDayWeather } = useContext(NextDayWeatherContext);
@@ -47,8 +49,8 @@ export function Weather() {
                 console.log(Pos.coords.latitude, Pos.coords.longitude);
                 // UpdateWeathers();
             }, (err) => {
-                if (err.code === err.PERMISSION_DENIED) alert("사용자 위치 정보 접근 권한이 없습니다.");
-                else alert("위치 정보를 얻는데 실패했습니다.");
+                if (err.code === err.PERMISSION_DENIED) ErrorHandler("사용자 위치 정보 접근 권한이 없습니다.");
+                else ErrorHandler("위치 정보를 얻는데 실패했습니다.");
             });
         }
         
@@ -76,18 +78,11 @@ export function Weather() {
             Position: (UserLocation.LocationName === Location_T.USERLOCATION)? UserLocation.Coords : undefined
         }
 
-        API.weather.current({ ...Request }).then(res => {
-            if (res.status) setTodayWeatherData(res.result);
-        }).catch(alert);
+        API.weather.current({ ...Request }).then(res => res.status&& setTodayWeatherData(res.result)).catch(ErrorHandler);
 
+        API.weather.forecast("hour", { ...Request }).then(res => res.status&& setNextHourWeather(res.result)).catch(ErrorHandler);
 
-        API.weather.forecast("hour", { ...Request }).then(res => {
-            if (res.status) setNextHourWeather(res.result);
-        }).catch(alert);
-
-        API.weather.forecast("week", { ...Request }).then(res => {
-            if (res.status) setNextDayWeather(res.result);
-        }).catch(alert);
+        API.weather.forecast("week", { ...Request }).then(res => res.status&& setNextDayWeather(res.result)).catch(ErrorHandler);
 
     }
 
@@ -122,7 +117,7 @@ export function Weather() {
             <NextDayWeather />
 
             <ScrollElement style={{padding: '1rem'}}>
-                {UserLocation&&UserLocation.Coords&& <Map height={10} center={{...UserLocation.Coords}} />}
+                {UserLocation.Coords? <Map height={10} center={{...UserLocation.Coords}} />:"사용자 위치 정보를 가져올 수 없습니다."}
             </ScrollElement>
 
         </ScrollView>

@@ -29,12 +29,15 @@ export const UserDataContext = React.createContext<UserDataContext>({
     setUserData: () => {}
 });
 export function UserDataProvider({ children }: React.PropsWithChildren<React.ReactNode>) {
-    const [cookies, setCookie] = useCookies<"UserData", {"UserData"?: UserData_T}>(["UserData"]);
+    const [cookies, setCookie, removeCookie] = useCookies<"UserData", {"UserData"?: UserData_T}>(["UserData"]);
     const [UserData, setData] = useState<UserData_T|undefined>(cookies.UserData);
 
     function setUserData(Data?: UserData_T) {
         setData(Data);
-        setCookie("UserData", Data);
+
+        if (Data === undefined) {
+            removeCookie("UserData");
+        } else setCookie("UserData", Data);
         console.log(Data);
     }
 
