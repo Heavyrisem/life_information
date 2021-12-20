@@ -39,21 +39,7 @@ export function Weather() {
     const { UserData } = useContext(UserDataContext);
     
     useEffect(() => {
-
-        if (!UserLocation.Coords) {
-            navigator.geolocation.getCurrentPosition(Pos => {
-                setUserLocation({
-                    LocationName: (UserData)? UserData.Setting.Location.name:UserLocation.LocationName,
-                    Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude }
-                });
-                console.log(Pos.coords.latitude, Pos.coords.longitude);
-                // UpdateWeathers();
-            }, (err) => {
-                if (err.code === err.PERMISSION_DENIED) ErrorHandler("사용자 위치 정보 접근 권한이 없습니다.");
-                else ErrorHandler("위치 정보를 얻는데 실패했습니다.");
-            });
-        }
-
+        UpdateUserCoords();
 
         if (UserData&& UserLocation.LocationName !== UserData.Setting.Location.name) {
             setUserLocation(prevState => ({
@@ -71,6 +57,22 @@ export function Weather() {
             UpdateWeathers();
         }
     }, [UserLocation?.LocationName]);
+
+    function UpdateUserCoords() {
+        if (!UserLocation.Coords) {
+            navigator.geolocation.getCurrentPosition(Pos => {
+                setUserLocation({
+                    LocationName: (UserData)? UserData.Setting.Location.name:UserLocation.LocationName,
+                    Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude }
+                });
+                console.log(Pos.coords.latitude, Pos.coords.longitude);
+                // UpdateWeathers();
+            }, (err) => {
+                if (err.code === err.PERMISSION_DENIED) ErrorHandler("사용자 위치 정보 접근 권한이 없습니다.");
+                else ErrorHandler("위치 정보를 얻는데 실패했습니다.");
+            });
+        }
+    }
 
     function UpdateWeathers() {
 

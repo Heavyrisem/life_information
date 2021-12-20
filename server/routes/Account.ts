@@ -10,7 +10,7 @@ import Auth from "../middleware/Auth";
 
 const router = Router();
 
-router.post("/login", async (req: Request<any,any,login_Request>, res: Response<login_Response>) => {
+router.post("/login", Auth.PWhash, async (req: Request<any,any,login_Request>, res: Response<login_Response>) => {
     const { ID, PW } = req.body;
     // const { ID, PW } = { ID: 'a', PW: 'b' };
 
@@ -47,7 +47,7 @@ router.post("/login", async (req: Request<any,any,login_Request>, res: Response<
     }
 })
 
-router.post("/register", async (req: Request<any,any,register_Request>, res: Response<register_Response>) => {
+router.post("/register", Auth.PWhash, async (req: Request<any,any,register_Request>, res: Response<register_Response>) => {
     const { ID, PW } = req.body;
 
     try {

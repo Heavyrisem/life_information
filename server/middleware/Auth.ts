@@ -28,5 +28,12 @@ export default {
             console.log(err);
             res.status(401).send(Utils.ErrorResponse(err));
         }
+    },
+    PWhash: (req: Request<any,any,{PW?: string}>, res: Response, next: NextFunction) => {
+        const { PW } = req.body;
+
+        if (PW) req.body = { ...req.body, PW: Utils.SHA256(PW) }
+        
+        next();
     }
 }

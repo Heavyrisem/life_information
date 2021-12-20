@@ -2,8 +2,11 @@ import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { Location_T } from '../Types/WeatherType';
 import { current_Response, default_Response, error_Response, forecast_Request, forecast_Response, login_Response, logout_Response, recent_Request, recent_Response, refresh_Response, register_Request, register_Response, setting_Response, today_Response } from '../../../shared/Network';
 import { Location_latlon } from '../../../shared/Weather';
-import { ERROR_T } from '../Types/GlobalTypes';
 import { UserSetting_DB } from '../../../shared/Types';
+import crypto from "crypto";
+
+
+const SHA256 = (str: string): string => crypto.createHash('sha256').update(str).digest('hex');
 
 const instance = axios.create({
     baseURL: "http://localhost",
@@ -67,12 +70,12 @@ const API = {
     account: {
         register: (ID: string, PW: string): Promise<register_Response> => {
             return new Promise((resolve, reject) => {
-                instance.post<register_Response>("/account/register", { ID, PW }).then(res => resolve(res.data)).catch(reject);
+                instance.post<register_Response>("/account/register", { ID, PW: SHA256(PW) }).then(res => resolve(res.data)).catch(reject);
             })
         },
         login: (ID: string, PW: string): Promise<login_Response> => {
             return new Promise((resolve, reject) => {
-                instance.post<login_Response>("/account/login", { ID, PW }).then(res => resolve(res.data)).catch(reject);
+                instance.post<login_Response>("/account/login", { ID, PW: SHA256(PW) }).then(res => resolve(res.data)).catch(reject);
             })
         },
         refreshToken: (ID: string): Promise<refresh_Response> => {
