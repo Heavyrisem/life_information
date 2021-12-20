@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { Location_T } from '../Types/WeatherType';
-import { current_Response, default_Response, error_Response, forecast_Request, forecast_Response, login_Response, logout_Response, recent_Request, recent_Response, refresh_Response, register_Request, register_Response, setting_Response, today_Response } from '../../../shared/Network';
+import { current_Response, default_Response, error_Response, forecast_Request, forecast_Response, login_Response, logout_Response, recent_Request, recent_Response, refresh_Response, register_Request, register_Response, setting_Response, sido_Request, sido_Response, today_Response } from '../../../shared/Network';
 import { Location_latlon } from '../../../shared/Weather';
 import { UserSetting_DB } from '../../../shared/Types';
 import crypto from "crypto";
@@ -64,6 +64,14 @@ const API = {
                     start: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
                 }
                 instance.post<recent_Response>("/covid/recent", params).then(res => resolve(res.data)).catch(reject);
+            })
+        },
+        sidoTop5: (): Promise<sido_Response> => {
+            return new Promise((resolve, reject) => {
+                const params: sido_Request = {
+                    start: new Date()
+                }
+                instance.post<sido_Response>("/covid/sido", params).then(res => resolve(res.data)).catch(reject);
             })
         }
     },

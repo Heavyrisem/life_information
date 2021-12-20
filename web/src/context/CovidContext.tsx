@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CovidData } from "../../../shared/CovidAPI";
+import { CovidData, CovidSidoData } from "../../../shared/CovidAPI";
 
 
 interface TodayCovidContext {
@@ -49,4 +49,30 @@ export function LastWeekCovidProvider({ children }: React.PropsWithChildren<Reac
     }
 
     return <LastWeekCovidContext.Provider value={{ LastWeekCovidData, setLastWeekCovidData }}>{children}</LastWeekCovidContext.Provider>
+}
+
+interface SidoCovidContext {
+    SidoCovidData: CovidSidoData[]
+    setSidoCovidData: (data: CovidSidoData[]) => any
+}
+export const SidoCovidContext = React.createContext<SidoCovidContext>({
+    SidoCovidData: [],
+    setSidoCovidData: () => {}
+});
+export function SidoCovidProvider({ children }: React.PropsWithChildren<React.ReactNode>) {
+    const [SidoCovidData, setCovidData] = useState<CovidSidoData[]>([]);
+
+    function setSidoCovidData(data: CovidSidoData[]) {
+
+        for (let i = 0; i < data.length; i++) {
+            const Data = data[i];
+            Data.createDt = new Date(Data.createDt);
+            if (Data.updateDt) Data.updateDt = new Date(Data.updateDt);
+            data[i] = Data;
+        }
+        
+        setCovidData(data);
+    }
+
+    return <SidoCovidContext.Provider value={{ SidoCovidData, setSidoCovidData }}>{children}</SidoCovidContext.Provider>
 }

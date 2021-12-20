@@ -68,7 +68,7 @@ export function Login() {
         if (IDref.current && PWref.current) {
             const [ID, PW] = [IDref.current.value, PWref.current.value];
 
-            if (!(ID && PW)) return;
+            if (!(ID && PW)) return ErrorHandler("필수 입력값이 비었습니다.");
             switch (Type) {
                 case "LOGIN": {
                     API.account.login(ID, PW).then(res => setUserData(res.status&& res.result)).catch(ErrorHandler); break;

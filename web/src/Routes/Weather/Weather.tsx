@@ -52,7 +52,7 @@ export function Weather() {
     }, []);
 
     useEffect(() => {
-        if (UserLocation && TodayWeatherData?.location != UserLocation.LocationName) {
+        if (TodayWeatherData?.location != UserLocation.LocationName) {
             console.log("UserLocation.LocationName", UserLocation.LocationName);
             UpdateWeathers();
         }

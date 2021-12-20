@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { CovidData } from "../../../../shared/CovidAPI";
 import { Emphasis, LoadingComponent, ScrollView } from "../../components/Elements";
-import { AdditionalData, WeeklyCovidTrends } from "./CovidElements";
+import { AdditionalData, SidoTopChart, WeeklyCovidTrends } from "./CovidElements";
 
-import { LastWeekCovidContext, TodayCovidContext } from "../../context/CovidContext";
+import { LastWeekCovidContext, SidoCovidContext, TodayCovidContext } from "../../context/CovidContext";
 import API from "../../API";
 import useError from "../../hooks/useError";
 
@@ -23,6 +23,7 @@ export function Covid() {
 	const ErrorHandler = useError();
     const { TodayCovidData, setTodayCovidData } = useContext(TodayCovidContext);
     const { LastWeekCovidData, setLastWeekCovidData } = useContext(LastWeekCovidContext);
+	const { SidoCovidData, setSidoCovidData } = useContext(SidoCovidContext);
 
     useEffect(() => {
 
@@ -31,6 +32,9 @@ export function Covid() {
 
         if (!LastWeekCovidData.length)
             API.covid.lastWeek().then(res => res.status&& setLastWeekCovidData(res.result)).catch(ErrorHandler);
+
+		if (!SidoCovidData.length)
+			API.covid.sidoTop5().then(res => res.status&& setSidoCovidData(res.result)).catch(ErrorHandler);
 
     }, []);
     
@@ -46,6 +50,8 @@ export function Covid() {
             <AdditionalData />
 
             <WeeklyCovidTrends />
+
+			<SidoTopChart />
         </ScrollView>
     )
 }

@@ -11,7 +11,7 @@ import NavigationBar from './components/NavigationBar';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Navigation_T } from './Types/GlobalTypes';
 import { Covid } from './Routes/Covid/Covid';
-import { LastWeekCovidProvider, TodayCovidProvider } from './context/CovidContext';
+import { LastWeekCovidProvider, SidoCovidProvider, TodayCovidProvider } from './context/CovidContext';
 import { Account } from './Routes/Account/Account';
 
 const Scroll = styled.div`
@@ -26,15 +26,7 @@ function App() {
 		<div>
 			<BrowserRouter>
 				<Scroll>
-					<CookiesProvider>
-					<UserDataProvider>
-					<UserLocationProvider>
-					<TodayWeatherProvider>
-					<NextHourWeatherProvider>
-					<NextDayWeatherProvider>
-					<TodayCovidProvider>
-					<LastWeekCovidProvider>
-	
+					<ServiceContextProvider>
 						<Routes>
 
 							<Route path={Navigation_T.WEATHER} element={
@@ -50,20 +42,38 @@ function App() {
 							} />
 
 						</Routes>
-
-					</LastWeekCovidProvider>
-					</TodayCovidProvider>
-					</NextDayWeatherProvider>
-					</NextHourWeatherProvider>
-					</TodayWeatherProvider>
-					</UserLocationProvider>
-					</UserDataProvider>
-					</CookiesProvider>
+					</ServiceContextProvider>
 				</Scroll>
 				<NavigationBar />
 			</BrowserRouter>
 		</div>
 	);
+}
+
+function ServiceContextProvider({ children }: React.PropsWithChildren<React.ReactNode>) {
+	return (
+		<CookiesProvider>
+		<UserDataProvider>
+		<UserLocationProvider>
+		<TodayWeatherProvider>
+		<NextHourWeatherProvider>
+		<NextDayWeatherProvider>
+		<TodayCovidProvider>
+		<LastWeekCovidProvider>
+		<SidoCovidProvider>
+
+			{children}
+
+		</SidoCovidProvider>
+		</LastWeekCovidProvider>
+		</TodayCovidProvider>
+		</NextDayWeatherProvider>
+		</NextHourWeatherProvider>
+		</TodayWeatherProvider>
+		</UserLocationProvider>
+		</UserDataProvider>
+		</CookiesProvider>
+	)
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ScrollElement, VerticalContainer, ElementTitle, HorizontalDivider, HorizontalContainer, VerticalElement, LoadingComponent, Subtitle, HorizontalElement } from "../../components/Elements";
 import { LinearGraph } from "../../components/LinearGraph";
-import { LastWeekCovidContext, TodayCovidContext } from "../../context/CovidContext";
+import { LastWeekCovidContext, SidoCovidContext, TodayCovidContext } from "../../context/CovidContext";
 import { GetDate } from "../../Utils/Date";
 
 
@@ -65,5 +65,35 @@ export function WeeklyCovidTrends() {
             </VerticalContainer>
         )}
     </ScrollElement>
+    )
+}
+
+export function SidoTopChart() {
+    const { SidoCovidData } = useContext(SidoCovidContext);
+
+    const ChartElementStyle: React.CSSProperties = {
+        flex: 'none',
+        padding: '0 1rem'
+    }
+
+    return (
+        <ScrollElement>
+            <VerticalContainer>
+            <ElementTitle>확진자가 가장 많은 시/도</ElementTitle>
+            <HorizontalDivider />
+
+
+            {SidoCovidData.map((CovidData, i) => (
+                <>
+                <HorizontalContainer key={i} style={{justifyContent: 'space-between'}}>
+                    <HorizontalElement style={ChartElementStyle}>{CovidData.gubun}</HorizontalElement>
+                    <HorizontalElement style={ChartElementStyle}>{CovidData.defCnt.toLocaleString()}명</HorizontalElement>
+                </HorizontalContainer>
+                {SidoCovidData[i+1]&& <HorizontalDivider />}
+                </>
+            ))}
+
+            </VerticalContainer>
+        </ScrollElement>
     )
 }
