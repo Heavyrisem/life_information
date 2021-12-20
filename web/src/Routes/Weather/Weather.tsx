@@ -38,14 +38,17 @@ export function Weather() {
     
     useEffect(() => {
 
-        if (!UserLocation) {
+        if (!UserLocation.Coords) {
             navigator.geolocation.getCurrentPosition(Pos => {
                 setUserLocation({
-                    LocationName: (UserData)? UserData.Setting.Location.name:Location_T.USERLOCATION,
+                    LocationName: (UserData)? UserData.Setting.Location.name:UserLocation.LocationName,
                     Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude }
                 });
                 console.log(Pos.coords.latitude, Pos.coords.longitude);
                 // UpdateWeathers();
+            }, (err) => {
+                if (err.code === err.PERMISSION_DENIED) alert("사용자 위치 정보 접근 권한이 없습니다.");
+                else alert("위치 정보를 얻는데 실패했습니다.");
             });
         }
         
@@ -103,7 +106,7 @@ export function Weather() {
             <Emphasis>
                     {TodayWeatherData?
                         <>
-                            <LocationSelection onChange={LocationSelectHandler} defaultValue={TodayWeatherData.location}>
+                            <LocationSelection onChange={LocationSelectHandler} value={TodayWeatherData.location}>
                                 {LocationArray.map(K => <option value={Location_T[K]} key={K}>{Location_T[K]}</option>)}
                             </LocationSelection>
                             <Degree>{TodayWeatherData.temperture.current}°</Degree>
