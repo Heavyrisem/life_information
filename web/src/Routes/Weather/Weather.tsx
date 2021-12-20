@@ -53,8 +53,14 @@ export function Weather() {
                 else ErrorHandler("위치 정보를 얻는데 실패했습니다.");
             });
         }
-        
 
+
+        if (UserData&& UserLocation.LocationName !== UserData.Setting.Location.name) {
+            setUserLocation(prevState => ({
+                ...prevState,
+                LocationName: UserData.Setting.Location.name
+            }))
+        }
 
         // setUserLocation({ LocationName: Location_T.USERLOCATION });
     }, []);
