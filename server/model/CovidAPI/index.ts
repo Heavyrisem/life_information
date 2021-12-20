@@ -1,5 +1,6 @@
 import axios, { Axios, AxiosInstance } from "axios";
-import { CovidAPI_Request, CovidAPI_Response, CovidData } from "../../../shared/CovidAPI";
+import { resolve } from "path/posix";
+import { CovidAPI_Request, CovidAPI_Response, CovidData, CovidSidoData } from "../../../shared/CovidAPI";
 
 export class CovidAPI {
     instance: AxiosInstance;
@@ -31,8 +32,9 @@ export class CovidAPI {
         if (end) params.endCreateDt = this.yyyyMMDD(end);
         else params.endCreateDt = this.yyyyMMDD(start);
 
-        const Response = await this.instance.get<CovidAPI_Response>("/getCovid19InfStateJson", { params });
+        const Response = await this.instance.get<CovidAPI_Response<CovidData | CovidData[]>>("/getCovid19InfStateJson", { params });
 
+        if (Response.data.response.header.resultCode != '00') throw Response.data.response.header.resultMsg;
         if (!Response.data.response.body.items) throw "조회된 데이터가 없습니다.";
 
         if (!Array.isArray(Response.data.response.body.items.item)) {
@@ -40,6 +42,25 @@ export class CovidAPI {
 
             return [Response.data.response.body.items.item];
         } else return Response.data.response.body.items.item.map(V => {
+            if (V.updateDt === "null") V.updateDt = null;
+            return V;
+        });
+    }
+
+    async Sido(start: Date, end?: Date): Promise<CovidSidoData[]> {
+        const params: CovidAPI_Request = {
+            startCreateDt: this.yyyyMMDD(start)
+        }
+        // console.log(params);
+        if (end) params.endCreateDt = this.yyyyMMDD(end);
+        else params.endCreateDt = this.yyyyMMDD(start);
+
+        const Response = await this.instance.get<CovidAPI_Response<CovidSidoData[]>>("/getCovid19SidoInfStateJson", { params });
+
+        if (Response.data.response.header.resultCode != '00') throw Response.data.response.header.resultMsg;
+        if (!Response.data.response.body.items) throw "조회된 데이터가 없습니다.";
+
+        return Response.data.response.body.items.item.map(V => {
             if (V.updateDt === "null") V.updateDt = null;
             return V;
         });

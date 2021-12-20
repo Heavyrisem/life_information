@@ -17,7 +17,7 @@ router.post("/forecast/hour", async (req: Request<any,any,forecast_Request>, res
     try {
         if (Location && Position && Global.WeatherAPI) {
             const WeatherResult = await Global.WeatherAPI.day(Position.lat, Position.lon);
-    
+            
             Response = {
                 status: true,
                 result: WeatherResult.hourly.map(Weather => ({
