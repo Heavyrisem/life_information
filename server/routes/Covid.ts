@@ -30,7 +30,16 @@ router.post("/recent", async (req: Request<any,any,recent_Request>, res: Respons
     try {
         if (start && Global.CovidAPI) {
             const Result = await Global.CovidAPI.Day(new Date(start), new Date());
-            
+
+            Result.sort((a, b) => new Date(b.createDt).getTime() - new Date(a.createDt).getTime());
+
+            for (let i = 1; i < Result.length; i++) {
+                if (Result[i-1] && Result[i]) {
+                    Result[i-1].decideCnt = Math.abs(Result[i-1].decideCnt - Result[i].decideCnt);
+                }
+            }
+            Result.pop();
+            // console.log(Result);
             return res.send({
                 status: true,
                 result: Result
@@ -54,7 +63,7 @@ router.post("/sido", async (req: Request<any,any,sido_Request>, res: Response<si
             Result.sort((a, b) => b.defCnt - a.defCnt);
             if (Result[0].gubun == "합계") Result.shift();
 
-            console.log(Result);
+            // console.log(Result);
 
             return res.send({
                 status: true,

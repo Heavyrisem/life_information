@@ -65,7 +65,7 @@ export class CovidAPI {
             return V;
         });
     }
-    
+
     // async LastWeek() {
     //     const Today = new Date();
     //     const Last7day = new Date(Date.now() - 1000 * 60 * 60 * 24 * 7);

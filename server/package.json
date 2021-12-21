@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/server/main"
+    "start": "nodemon dist/server/main",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
@@ -18,11 +19,13 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.2.2",
+    "nodemon": "^2.0.15",
     "openweathermap-ts": "^1.2.10",
     "owm-onecall-api": "^1.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/jsonwebtoken": "^8.5.6"
+    "@types/jsonwebtoken": "^8.5.6",
+    "typescript": "^4.5.4"
   }
 }
