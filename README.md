@@ -30,7 +30,19 @@ __취소선은 구현 완료__
 
 ### Mongodb가 필요합니다.
 개발하면서 테스트 할 때에는 Docker Mongodb를 사용했습니다.
-https://hub.docker.com/_/mongo
+
+
+DockerHub mongodb 
+https://hub.docker.com/_/mongo 
+
+Docker mongo 실행 방법이 정리되어 있는 블로그
+https://poiemaweb.com/docker-mongodb
+
+```
+docker pull mongo
+docker run --name mongodb-container -v ~/data:/data/db -d -p 27017:27017 mongo
+```
+
 
 데이터베이스 연결 설정 파일 수정 `.../server/models/DB/Config.json`
 
@@ -65,9 +77,16 @@ npm start
 
 
 ```
+// 실행 명령어
 cd web
 npm i
 npm start
+```
+
+```
+// lint 명령어
+npm run lint
+npm run lint:fix
 ```
 
 #### 참고사항

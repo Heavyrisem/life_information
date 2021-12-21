@@ -26,7 +26,6 @@ export default {
         } catch (err) {
             const message = (err as JsonWebTokenError).message;
             if (message === 'jwt expired') {
-                // throw ERROR_T.AUTH_EXPIRED;
                 return false;
             } else throw ERROR_T.AUTH_FAILD
         }
@@ -45,7 +44,6 @@ export default {
         } catch (err) {
             const message = (err as JsonWebTokenError).message;
             if (message === 'jwt expired') {
-                // throw ERROR_T.AUTH_EXPIRED;
                 return false;
             } else throw ERROR_T.AUTH_FAILD
         }
