@@ -43,29 +43,30 @@ docker pull mongo
 docker run --name mongodb-container -v ~/data:/data/db -d -p 27017:27017 mongo
 ```
 
-
-데이터베이스 연결 설정 파일 수정 `.../server/models/DB/Config.json`
-
+서버 설정 정보 수정 `.../server/Config.json`
 ```
-// 예시
 {
-    "host": "localhost:27017",
-    "DataBase": "life_information"
-}
-```
-
-API 키 파일 수정 `.../server/APIKEY.json`
-```
-// 예시
-{
-    "Weather": "",
-    "Covid": ""
+    "DB": {
+        "host": "localhost:27017",                      // 데이터베이스 주소
+        "DataBase": "life_information"                  // 사용할 데이터베이스 이름
+    },
+    "JWT": {
+        "ACCESS_TOKEN_SECRET": "AccessToken",           // JWT 토큰(Access Token) 생성에 쓰이는 값
+        "REFRESH_TOKEN_SECRET": "RefreshToken",         // JWT 토큰(Refresh Token) 생성에 쓰이는 값
+        "AccessExpireIn": "10min",                      // Access Token 만료 시간
+        "RefreshExpireIn": "1h"                         // Refresh Token 만료 시간
+    },
+    "APIKEY": {
+        "Weather": "",                                  // OpenWeatherAPI의 API KEY 값
+        "Covid": ""                                     // 공공데이터 코로나 API의 API KEY 값
+    }
 }
 ```
 
 ```
 cd server
 npm i
+npm build
 npm start
 ```
 
