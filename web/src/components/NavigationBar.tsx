@@ -26,7 +26,7 @@ const StyledNavigationBar = styled.div`
 	z-index: 999;
 `;
 
-const Href = styled(Link)`
+const StyledLink = styled(Link)`
 	color: black;
 	font-size: 2rem;
 	margin: auto;
@@ -38,13 +38,15 @@ function NavigationBar() {
 
 	return (
 		<StyledNavigationBar>
-			<Href to="/">{CurrentLocation.pathname === Navigation_T.WEATHER ? <RiCloudFill /> : <RiCloudLine />}</Href>
-			<Href to="/covid">
+			<StyledLink to="/">
+				{CurrentLocation.pathname === Navigation_T.WEATHER ? <RiCloudFill /> : <RiCloudLine />}
+			</StyledLink>
+			<StyledLink to="/covid">
 				{CurrentLocation.pathname === Navigation_T.COVID ? <RiSurgicalMaskFill /> : <RiSurgicalMaskLine />}
-			</Href>
-			<Href to="/account">
+			</StyledLink>
+			<StyledLink to="/account">
 				{CurrentLocation.pathname === Navigation_T.ACCOUNT ? <RiAccountCircleFill /> : <RiAccountCircleLine />}
-			</Href>
+			</StyledLink>
 		</StyledNavigationBar>
 	);
 }

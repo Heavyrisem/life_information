@@ -117,15 +117,6 @@ const API = {
 					.then(res => resolve(res.data))
 					.catch(reject);
 			}),
-		refreshToken: (ID: string): Promise<refresh_Response> =>
-			new Promise((resolve, reject) => {
-				instance
-					.post('/account/refresh', { ID })
-					.then(res => {
-						resolve(res.data);
-					})
-					.catch(reject);
-			}),
 		logout: (): Promise<logout_Response> =>
 			new Promise((resolve, reject) => {
 				instance

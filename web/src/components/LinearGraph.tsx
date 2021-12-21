@@ -38,7 +38,7 @@ export default function LinearGraph(props: LinearGraph_P) {
 		ctx.scale(DPR, DPR);
 	}
 
-	const DrawGraph = useCallback(() => {
+	const drawGraph = useCallback(() => {
 		// console.log('DRAW GRAPH');
 		const Container = parent.current;
 		const Canvas = CanvasRef.current;
@@ -83,8 +83,8 @@ export default function LinearGraph(props: LinearGraph_P) {
 
 	useEffect(() => {
 		// console.log(props.data);
-		if (!previousData || !equalArray(previousData.data, data.data)) DrawGraph();
-	}, [DrawGraph, data, previousData]);
+		if (!previousData || !equalArray(previousData.data, data.data)) drawGraph();
+	}, [drawGraph, data, previousData]);
 
 	return <canvas ref={CanvasRef} {...rest} />;
 }

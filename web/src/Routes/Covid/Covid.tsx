@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import API from '../../API';
-import { Emphasis, LoadingComponent, ScrollView } from '../../components/Elements';
+import { Emphasis, LoadingComponent, ScrollContainer } from '../../components/ScrollElements';
 
 import { LastWeekCovidContext, SidoCovidContext, TodayCovidContext } from '../../context/CovidContext';
 import useError from '../../hooks/useError';
@@ -46,7 +46,7 @@ export default function Covid() {
 	}, []);
 
 	return (
-		<ScrollView>
+		<ScrollContainer>
 			<Emphasis>
 				<div>확진자</div>
 				<StyledDecideCnt>
@@ -67,6 +67,6 @@ export default function Covid() {
 			<WeeklyCovidTrends />
 
 			<SidoTopChart />
-		</ScrollView>
+		</ScrollContainer>
 	);
 }

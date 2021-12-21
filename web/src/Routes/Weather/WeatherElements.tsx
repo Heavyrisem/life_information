@@ -3,6 +3,8 @@ import React, { useContext } from 'react';
 import { BsFillCloudRainFill } from 'react-icons/bs';
 import { GiWaterDrop } from 'react-icons/gi';
 
+import HorizontalRangeGraph from '../../components/HorizontalRangeGraph';
+import LinearGraph from '../../components/LinearGraph';
 import {
 	ElementTitle,
 	HorizontalContainer,
@@ -10,9 +12,7 @@ import {
 	HorizontalElement,
 	ScrollElement,
 	VerticalContainer,
-} from '../../components/Elements';
-import HorizontalRangeGraph from '../../components/HorizontalRangeGraph';
-import LinearGraph from '../../components/LinearGraph';
+} from '../../components/ScrollElements';
 import { NextDayWeatherContext, NextHourWeatherContext } from '../../context/WeatherContext';
 import { GetDay, GetHour } from '../../Utils/Date';
 

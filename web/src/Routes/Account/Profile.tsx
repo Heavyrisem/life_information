@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { UserSetting_DB } from '../../../../shared/Types';
@@ -8,10 +8,10 @@ import {
 	Emphasis,
 	HorizontalDivider,
 	ScrollElement,
-	ScrollView,
+	ScrollContainer,
 	VerticalContainer,
 	VerticalElement,
-} from '../../components/Elements';
+} from '../../components/ScrollElements';
 import { UserDataContext } from '../../context/UserContext';
 import useError from '../../hooks/useError';
 import { LocationArray, Location_T } from '../../Types/WeatherType';
@@ -73,8 +73,18 @@ export default function Profile() {
 		[ErrorHandler, UserData, setUserData]
 	);
 
+	const LocationSelectList = useMemo(
+		() =>
+			LocationArray.map(Loc => (
+				<option value={Location_T[Loc]} key={Loc}>
+					{Location_T[Loc]}
+				</option>
+			)),
+		[]
+	);
+
 	return (
-		<ScrollView>
+		<ScrollContainer>
 			{UserData && (
 				<>
 					<Emphasis>
@@ -94,17 +104,13 @@ export default function Profile() {
 									onChange={LocationSettingHandler}
 									defaultValue={UserData.Setting.Location.name}
 								>
-									{LocationArray.map(Loc => (
-										<option value={Location_T[Loc]} key={Loc}>
-											{Location_T[Loc]}
-										</option>
-									))}
+									{LocationSelectList}
 								</SettingSelect>
 							</SettingField>
 						</VerticalContainer>
 					</ScrollElement>
 				</>
 			)}
-		</ScrollView>
+		</ScrollContainer>
 	);
 }

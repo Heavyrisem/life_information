@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
-export const ScrollView = styled.div`
+export const ScrollContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 1rem;
@@ -55,7 +55,6 @@ export const ElementTitle = styled.span`
 	align-self: start;
 
 	text-align: left;
-	/* padding-left: 1rem; */
 	font-size: 0.7rem;
 `;
 export const Subtitle = styled.span`
@@ -63,8 +62,9 @@ export const Subtitle = styled.span`
 	font-size: 0.8rem;
 `;
 
-export const HorizontalDivider = styled.hr`
+export const HorizontalDivider = styled.div`
 	width: 100%;
+	margin: 0.5rem 0;
 	border: none;
 	border-top: solid 1px rgba(150, 150, 150, 0.3);
 `;
@@ -83,7 +83,6 @@ export const HorizontalContainer = styled.div`
 	align-items: center;
 `;
 export const HorizontalElement = styled.div<{ flex?: number }>`
-	/* display: inline-block; */
 	flex: ${({ flex }) => (flex !== undefined ? flex : 'auto')};
 `;
 

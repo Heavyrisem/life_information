@@ -1,15 +1,12 @@
 import React from 'react';
 
 import './App.css';
-import { CookiesProvider } from 'react-cookie';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
 import NavigationBar from './components/NavigationBar';
-import { LastWeekCovidProvider, SidoCovidProvider, TodayCovidProvider } from './context/CovidContext';
-import { UserDataProvider, UserLocationProvider } from './context/UserContext';
-import { NextDayWeatherProvider, NextHourWeatherProvider, TodayWeatherProvider } from './context/WeatherContext';
+import ServiceContextProvider from './context/ServiceContextProvider';
 import Account from './Routes/Account/Account';
 import Covid from './Routes/Covid/Covid';
 import Weather from './Routes/Weather/Weather';
@@ -21,28 +18,6 @@ const Scroll = styled.div`
 	overflow: scroll;
 	text-align: center;
 `;
-
-function ServiceContextProvider({ children }: React.PropsWithChildren<React.ReactNode>) {
-	return (
-		<CookiesProvider>
-			<UserDataProvider>
-				<UserLocationProvider>
-					<TodayWeatherProvider>
-						<NextHourWeatherProvider>
-							<NextDayWeatherProvider>
-								<TodayCovidProvider>
-									<LastWeekCovidProvider>
-										<SidoCovidProvider>{children}</SidoCovidProvider>
-									</LastWeekCovidProvider>
-								</TodayCovidProvider>
-							</NextDayWeatherProvider>
-						</NextHourWeatherProvider>
-					</TodayWeatherProvider>
-				</UserLocationProvider>
-			</UserDataProvider>
-		</CookiesProvider>
-	);
-}
 
 function App() {
 	return (
@@ -64,29 +39,3 @@ function App() {
 }
 
 export default App;
-
-// function sleep(t: number): Promise<void> {
-// 	return new Promise(resolve => {
-// 		setTimeout(() => {
-// 			resolve();
-// 		}, t);
-// 	})
-// }
-// const Test = React.memo(function () {
-
-// 	// const [s, ss] = useState<number>();
-// 	// const s = useMemo(() => {
-// 		// await sleep(1000);
-// 		// return 1;
-// 	// }, [])
-
-// 	useEffect(() => {
-// 		setTimeout(() => {
-// 			// ss(2);
-// 		}, 1000);
-// 	}, []);
-
-// 	return (
-// 		<div>{}</div>
-// 	)
-// })

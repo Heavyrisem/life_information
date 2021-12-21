@@ -2,9 +2,9 @@ import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
 import API from '../../API';
-import { ScrollElement, Emphasis, ScrollView } from '../../components/Elements';
-
 import Map from '../../components/Map';
+import { ScrollElement, Emphasis, ScrollContainer } from '../../components/ScrollElements';
+
 import { UserDataContext, UserLocationContext } from '../../context/UserContext';
 import { NextDayWeatherContext, NextHourWeatherContext, TodayWeatherContext } from '../../context/WeatherContext';
 import useError from '../../hooks/useError';
@@ -139,7 +139,7 @@ export default function Weather() {
 	}, [LocationSelectHandler, TodayWeatherData]);
 
 	return (
-		<ScrollView>
+		<ScrollContainer>
 			<Emphasis>{WeatherSummary}</Emphasis>
 
 			<NextHourWeather />
@@ -152,6 +152,6 @@ export default function Weather() {
 					'사용자 위치 정보를 가져올 수 없습니다.'
 				)}
 			</ScrollElement>
-		</ScrollView>
+		</ScrollContainer>
 	);
 }

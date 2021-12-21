@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 
+import LinearGraph from '../../components/LinearGraph';
 import {
 	ScrollElement,
 	VerticalContainer,
@@ -10,8 +11,7 @@ import {
 	LoadingComponent,
 	Subtitle,
 	HorizontalElement,
-} from '../../components/Elements';
-import LinearGraph from '../../components/LinearGraph';
+} from '../../components/ScrollElements';
 import { LastWeekCovidContext, SidoCovidContext, TodayCovidContext } from '../../context/CovidContext';
 import { GetDate } from '../../Utils/Date';
 
