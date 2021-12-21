@@ -1,0 +1,16 @@
+{
+    "DB": {
+        "host": "localhost:27017",
+        "DataBase": "life_information"
+    },
+    "JWT": {
+        "ACCESS_TOKEN_SECRET": "ACCESS_TOKEN_SECRET",
+        "REFRESH_TOKEN_SECRET": "REFRESH_TOKEN_SECRET",
+        "AccessExpireIn": "10min",
+        "RefreshExpireIn": "1h"
+    },
+    "APIKEY": {
+        "Weather": "458bad37714b04968d3b022911e2fd70",
+        "Covid": "BHW7c9MHVxuRbxu%2FJF%2BYeBR4unXRbiVAE3y%2FwSFZTChcoaWvhQxYilVdBxBBfxbDGnzJNaxLtB3vnSDq4ire7Q%3D%3D"
+    }
+}

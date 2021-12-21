@@ -1,11 +1,11 @@
 import { MongoClient } from 'mongodb';
-import DBconfig from './Config.json';
+import Config from '../../Config.json';
 
 class DB {
     DB_Client: MongoClient;
     
     constructor() {
-        this.DB_Client = new MongoClient(`mongodb://${DBconfig.host}/${DBconfig.DataBase}`);
+        this.DB_Client = new MongoClient(`mongodb://${Config.DB.host}/${Config.DB.DataBase}`);
         this.DB_Client.connect();
         console.log("Database Connected");
         

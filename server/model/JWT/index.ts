@@ -4,23 +4,22 @@ import DB from "../DB";
 import { ERROR_T } from "../../../shared/Network";
 import { UserData_DB } from "../../../shared/Types";
 
-import Config from "./Config.json";
-
+import Config from '../../Config.json';
 
 export default {
     generateAccessToken: (id: string) => {
-        return jwt.sign({ id }, Config.ACCESS_TOKEN_SECRET, {
-            expiresIn: "20s"
+        return jwt.sign({ id }, Config.JWT.ACCESS_TOKEN_SECRET, {
+            expiresIn: Config.JWT.AccessExpireIn
         })
     },
     generateRefreshToken: () => {
-        return jwt.sign({ }, Config.REFRESH_TOKEN_SECRET, {
-            expiresIn: "1m"
+        return jwt.sign({ }, Config.JWT.REFRESH_TOKEN_SECRET, {
+            expiresIn: Config.JWT.RefreshExpireIn
         })
     },
     authenticateAccessToken: (token: string): boolean => {
         try {
-            const Result = jwt.verify(token, Config.ACCESS_TOKEN_SECRET);
+            const Result = jwt.verify(token, Config.JWT.ACCESS_TOKEN_SECRET);
             console.log(Result);
             return Boolean(Result);
         } catch (err) {
@@ -37,7 +36,7 @@ export default {
             const User = await db.collection('Users').findOne<UserData_DB>({ ID });
 
             if (User && User.RefreshToken === token) {
-                const Result = jwt.verify(token, Config.REFRESH_TOKEN_SECRET);
+                const Result = jwt.verify(token, Config.JWT.REFRESH_TOKEN_SECRET);
                 console.log(Result);
                 return Boolean(Result);
             } return false;

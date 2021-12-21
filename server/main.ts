@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 import { Language, OpenWeatherMap, Units } from 'owm-onecall-api';
 import { CovidAPI } from './model/CovidAPI';
 
-import APIKEY from "./APIKEY.json";
+import Config from './Config.json';
 
 const PORT = 80;
 const App = express();
@@ -27,8 +27,8 @@ App.use("/account", Account);
 
 App.listen(PORT, () => {
     // Global.WeatherAPI = new OpenWeatherMap("21d5ef6432edd2d558243d66466ee62d", { lang: Language.Korean, units: Units.Metric });
-    Global.WeatherAPI = new OpenWeatherMap(APIKEY.Weather, { lang: Language.Korean, units: Units.Metric });
-    Global.CovidAPI = new CovidAPI(APIKEY.Covid);
+    Global.WeatherAPI = new OpenWeatherMap(Config.APIKEY.Weather, { lang: Language.Korean, units: Units.Metric });
+    Global.CovidAPI = new CovidAPI(Config.APIKEY.Covid);
     
     console.log("Life_Information Server Online");
 });
