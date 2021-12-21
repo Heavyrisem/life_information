@@ -8,7 +8,7 @@ import {
 	RiSurgicalMaskFill,
 	RiSurgicalMaskLine,
 } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Navigation_T } from '../Types/GlobalTypes';
@@ -26,25 +26,25 @@ const StyledNavigationBar = styled.div`
 	z-index: 999;
 `;
 
+const Href = styled(Link)`
+	color: black;
+	font-size: 2rem;
+	margin: auto;
+	display: flex;
+`;
+
 function NavigationBar() {
-	const IconStyle: React.CSSProperties = {
-		color: 'black',
-		fontSize: '2rem',
-		margin: 'auto',
-		display: 'flex',
-	};
+	const CurrentLocation = useLocation();
 
 	return (
 		<StyledNavigationBar>
-			<Link to="/" style={IconStyle}>
-				{window.location.pathname === Navigation_T.WEATHER ? <RiCloudFill /> : <RiCloudLine />}
-			</Link>
-			<Link to="/covid" style={IconStyle}>
-				{window.location.pathname === Navigation_T.COVID ? <RiSurgicalMaskFill /> : <RiSurgicalMaskLine />}
-			</Link>
-			<Link to="/account" style={IconStyle}>
-				{window.location.pathname === Navigation_T.ACCOUNT ? <RiAccountCircleFill /> : <RiAccountCircleLine />}
-			</Link>
+			<Href to="/">{CurrentLocation.pathname === Navigation_T.WEATHER ? <RiCloudFill /> : <RiCloudLine />}</Href>
+			<Href to="/covid">
+				{CurrentLocation.pathname === Navigation_T.COVID ? <RiSurgicalMaskFill /> : <RiSurgicalMaskLine />}
+			</Href>
+			<Href to="/account">
+				{CurrentLocation.pathname === Navigation_T.ACCOUNT ? <RiAccountCircleFill /> : <RiAccountCircleLine />}
+			</Href>
 		</StyledNavigationBar>
 	);
 }

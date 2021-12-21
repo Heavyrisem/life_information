@@ -104,7 +104,7 @@ export function SidoTopChart() {
 								{CovidData.defCnt.toLocaleString()}명
 							</HorizontalElement>
 						</HorizontalContainer>
-						{SidoCovidData[i + 1] && <HorizontalDivider />}
+						{SidoCovidData[i + 1] && <HorizontalDivider key={`${CovidData.seq}sep`} />}
 					</>
 				))}
 			</VerticalContainer>
