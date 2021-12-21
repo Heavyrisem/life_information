@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
 import API from '../../API';
@@ -114,30 +114,33 @@ export default function Weather() {
 		[setUserLocation, UserLocation]
 	);
 
+	const WeatherSummary = useMemo(() => {
+		if (TodayWeatherData) {
+			return (
+				<>
+					<LocationSelection onChange={LocationSelectHandler} value={TodayWeatherData.location}>
+						{LocationArray.map(K => (
+							<option value={Location_T[K]} key={K}>
+								{Location_T[K]}
+							</option>
+						))}
+					</LocationSelection>
+					<Degree>{TodayWeatherData.temperture.current}°</Degree>
+					<div>{TodayWeatherData.condition.description}</div>
+					<div>
+						최고:
+						{TodayWeatherData.temperture.max}° 최저:
+						{TodayWeatherData.temperture.min}°
+					</div>
+				</>
+			);
+		}
+		return <div>불러오는 중</div>;
+	}, [LocationSelectHandler, TodayWeatherData]);
+
 	return (
 		<ScrollView>
-			<Emphasis>
-				{TodayWeatherData ? (
-					<>
-						<LocationSelection onChange={LocationSelectHandler} value={TodayWeatherData.location}>
-							{LocationArray.map(K => (
-								<option value={Location_T[K]} key={K}>
-									{Location_T[K]}
-								</option>
-							))}
-						</LocationSelection>
-						<Degree>{TodayWeatherData.temperture.current}°</Degree>
-						<div>{TodayWeatherData.condition.description}</div>
-						<div>
-							최고:
-							{TodayWeatherData.temperture.max}° 최저:
-							{TodayWeatherData.temperture.min}°
-						</div>
-					</>
-				) : (
-					<div>불러오는 중</div>
-				)}
-			</Emphasis>
+			<Emphasis>{WeatherSummary}</Emphasis>
 
 			<NextHourWeather />
 			<NextDayWeather />
