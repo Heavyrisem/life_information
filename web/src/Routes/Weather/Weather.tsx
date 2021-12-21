@@ -1,133 +1,154 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import { ScrollElement, Emphasis, ScrollView } from "../../components/Elements";
+import React, { useCallback, useContext, useEffect } from 'react';
+import styled from 'styled-components';
 
-import { LocationArray, Location_T } from "../../Types/WeatherType";
-import { NextDayWeatherContext, NextHourWeatherContext, TodayWeatherContext } from "../../context/WeatherContext";
-import { NextDayWeather, NextHourWeather } from "./WeatherElements";
-import { Map } from "../../components/Map";
-import API from "../../API";
-import { UserDataContext, UserLocationContext } from "../../context/UserContext";
-import useError from "../../hooks/useError";
+import API from '../../API';
+import { ScrollElement, Emphasis, ScrollView } from '../../components/Elements';
 
-
+import Map from '../../components/Map';
+import { UserDataContext, UserLocationContext } from '../../context/UserContext';
+import { NextDayWeatherContext, NextHourWeatherContext, TodayWeatherContext } from '../../context/WeatherContext';
+import useError from '../../hooks/useError';
+import { LocationArray, Location_T } from '../../Types/WeatherType';
+import { NextDayWeather, NextHourWeather } from './WeatherElements';
 
 const LocationSelection = styled.select`
-    border: none;
-    display: inline-block;
-    font-size: 1.5rem;
+	border: none;
+	display: inline-block;
+	font-size: 1.5rem;
 
-    -webkit-appearance: none;
-    background: none;
+	-webkit-appearance: none;
+	background: none;
 
-    outline: none;
-    text-align: center;
-    color: white;
+	outline: none;
+	text-align: center;
+	color: white;
 `;
 
 const Degree = styled.div`
-    font-size: 6rem;
+	font-size: 6rem;
 `;
 
+export default function Weather() {
+	const ErrorHandler = useError();
+	const { TodayWeatherData, setTodayWeatherData } = useContext(TodayWeatherContext);
+	const { setNextHourWeather } = useContext(NextHourWeatherContext);
+	const { setNextDayWeather } = useContext(NextDayWeatherContext);
+	const { UserLocation, setUserLocation } = useContext(UserLocationContext);
+	const { UserData } = useContext(UserDataContext);
 
-export function Weather() {
-    const ErrorHandler = useError();
-    const { TodayWeatherData, setTodayWeatherData } = useContext(TodayWeatherContext);
-    const { setNextHourWeather } = useContext(NextHourWeatherContext);
-    const { setNextDayWeather } = useContext(NextDayWeatherContext);
-    const { UserLocation, setUserLocation } = useContext(UserLocationContext);
-    const { UserData } = useContext(UserDataContext);
-    
-    useEffect(() => {
-        UpdateUserCoords();
+	function UpdateUserCoords() {
+		if (!UserLocation.Coords) {
+			navigator.geolocation.getCurrentPosition(
+				Pos => {
+					setUserLocation({
+						LocationName: UserData ? UserData.Setting.Location.name : UserLocation.LocationName,
+						Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude },
+					});
+					// console.log(Pos.coords.latitude, Pos.coords.longitude);
+					// UpdateWeathers();
+				},
+				err => {
+					if (err.code === err.PERMISSION_DENIED) ErrorHandler('사용자 위치 정보 접근 권한이 없습니다.');
+					else ErrorHandler('위치 정보를 얻는데 실패했습니다.');
+				}
+			);
+		}
+	}
 
-        if (UserData&& UserLocation.LocationName !== UserData.Setting.Location.name) {
-            setUserLocation(prevState => ({
-                ...prevState,
-                LocationName: UserData.Setting.Location.name
-            }))
-        }
+	const UpdateWeathers = useCallback(() => {
+		if (!UserLocation) return;
+		if (UserLocation.LocationName === Location_T.USERLOCATION && !UserLocation.Coords) return;
 
-        // setUserLocation({ LocationName: Location_T.USERLOCATION });
-    }, []);
+		// console.log(UserLocation);
 
-    useEffect(() => {
-        if (TodayWeatherData?.location != UserLocation.LocationName) {
-            console.log("UserLocation.LocationName", UserLocation.LocationName);
-            UpdateWeathers();
-        }
-    }, [UserLocation?.LocationName]);
+		const Request = {
+			Location: UserLocation.LocationName,
+			Position: UserLocation.LocationName === Location_T.USERLOCATION ? UserLocation.Coords : undefined,
+		};
 
-    function UpdateUserCoords() {
-        if (!UserLocation.Coords) {
-            navigator.geolocation.getCurrentPosition(Pos => {
-                setUserLocation({
-                    LocationName: (UserData)? UserData.Setting.Location.name:UserLocation.LocationName,
-                    Coords: { lat: Pos.coords.latitude, lon: Pos.coords.longitude }
-                });
-                console.log(Pos.coords.latitude, Pos.coords.longitude);
-                // UpdateWeathers();
-            }, (err) => {
-                if (err.code === err.PERMISSION_DENIED) ErrorHandler("사용자 위치 정보 접근 권한이 없습니다.");
-                else ErrorHandler("위치 정보를 얻는데 실패했습니다.");
-            });
-        }
-    }
+		API.weather
+			.current({ ...Request })
+			.then(res => res.status && setTodayWeatherData(res.result))
+			.catch(ErrorHandler);
 
-    function UpdateWeathers() {
+		API.weather
+			.forecast('hour', { ...Request })
+			.then(res => res.status && setNextHourWeather(res.result))
+			.catch(ErrorHandler);
 
-        if (!UserLocation) return;
-        if (UserLocation.LocationName === Location_T.USERLOCATION && !UserLocation.Coords) return;
-        
-        console.log(UserLocation);
+		API.weather
+			.forecast('week', { ...Request })
+			.then(res => res.status && setNextDayWeather(res.result))
+			.catch(ErrorHandler);
+	}, [ErrorHandler, UserLocation, setNextDayWeather, setNextHourWeather, setTodayWeatherData]);
 
-        const Request = {
-            Location: UserLocation.LocationName,
-            Position: (UserLocation.LocationName === Location_T.USERLOCATION)? UserLocation.Coords : undefined
-        }
+	useEffect(() => {
+		UpdateUserCoords();
 
-        API.weather.current({ ...Request }).then(res => res.status&& setTodayWeatherData(res.result)).catch(ErrorHandler);
+		if (UserData && UserLocation.LocationName !== UserData.Setting.Location.name) {
+			setUserLocation(prevState => ({
+				...prevState,
+				LocationName: UserData.Setting.Location.name,
+			}));
+		}
 
-        API.weather.forecast("hour", { ...Request }).then(res => res.status&& setNextHourWeather(res.result)).catch(ErrorHandler);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-        API.weather.forecast("week", { ...Request }).then(res => res.status&& setNextDayWeather(res.result)).catch(ErrorHandler);
+	useEffect(() => {
+		if (TodayWeatherData?.location !== UserLocation.LocationName) {
+			// console.log('UserLocation.LocationName', UserLocation.LocationName);
+			UpdateWeathers();
+		}
+	}, [TodayWeatherData?.location, UpdateWeathers, UserLocation.LocationName]);
 
-    }
+	const LocationSelectHandler = useCallback(
+		(e: React.ChangeEvent<HTMLSelectElement>) => {
+			if (e.target.value) {
+				setUserLocation({
+					...UserLocation,
+					LocationName: e.target.value as Location_T,
+				});
+			}
+		},
+		[setUserLocation, UserLocation]
+	);
 
-    function LocationSelectHandler(e: React.ChangeEvent<HTMLSelectElement>) {
-        if (e.target.value) {
-            setUserLocation({
-                ...UserLocation,
-                LocationName: e.target.value as Location_T
-            })
-        }
-    }
+	return (
+		<ScrollView>
+			<Emphasis>
+				{TodayWeatherData ? (
+					<>
+						<LocationSelection onChange={LocationSelectHandler} value={TodayWeatherData.location}>
+							{LocationArray.map(K => (
+								<option value={Location_T[K]} key={K}>
+									{Location_T[K]}
+								</option>
+							))}
+						</LocationSelection>
+						<Degree>{TodayWeatherData.temperture.current}°</Degree>
+						<div>{TodayWeatherData.condition.description}</div>
+						<div>
+							최고:
+							{TodayWeatherData.temperture.max}° 최저:
+							{TodayWeatherData.temperture.min}°
+						</div>
+					</>
+				) : (
+					<div>불러오는 중</div>
+				)}
+			</Emphasis>
 
-    return (
-        <ScrollView>
+			<NextHourWeather />
+			<NextDayWeather />
 
-            <Emphasis>
-                    {TodayWeatherData?
-                        <>
-                            <LocationSelection onChange={LocationSelectHandler} value={TodayWeatherData.location}>
-                                {LocationArray.map(K => <option value={Location_T[K]} key={K}>{Location_T[K]}</option>)}
-                            </LocationSelection>
-                            <Degree>{TodayWeatherData.temperture.current}°</Degree>
-                            <div>{TodayWeatherData.condition.description}</div>
-                            <div>최고:{TodayWeatherData.temperture.max}° 최저:{TodayWeatherData.temperture.min}°</div>
-                        </>:
-                        <div>불러오는 중</div>
-                    }
-            </Emphasis>
-
-
-            <NextHourWeather />
-            <NextDayWeather />
-
-            <ScrollElement style={{padding: '1rem'}}>
-                {UserLocation.Coords? <Map height={10} center={{...UserLocation.Coords}} />:"사용자 위치 정보를 가져올 수 없습니다."}
-            </ScrollElement>
-
-        </ScrollView>
-    )
+			<ScrollElement style={{ padding: '1rem' }}>
+				{UserLocation.Coords ? (
+					<Map height={10} center={{ ...UserLocation.Coords }} />
+				) : (
+					'사용자 위치 정보를 가져올 수 없습니다.'
+				)}
+			</ScrollElement>
+		</ScrollView>
+	);
 }

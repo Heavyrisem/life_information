@@ -1,18 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Weather } from './Routes/Weather/Weather';
-import styled from 'styled-components';
-import { CookiesProvider } from "react-cookie";
+import React from 'react';
 
-import { NextDayWeatherProvider, NextHourWeatherProvider, TodayWeatherProvider } from './context/WeatherContext';
-import { UserDataProvider, UserLocationProvider } from './context/UserContext';
-import NavigationBar from './components/NavigationBar';
+import './App.css';
+import { CookiesProvider } from 'react-cookie';
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Navigation_T } from './Types/GlobalTypes';
-import { Covid } from './Routes/Covid/Covid';
+import styled from 'styled-components';
+
+import NavigationBar from './components/NavigationBar';
 import { LastWeekCovidProvider, SidoCovidProvider, TodayCovidProvider } from './context/CovidContext';
-import { Account } from './Routes/Account/Account';
+import { UserDataProvider, UserLocationProvider } from './context/UserContext';
+import { NextDayWeatherProvider, NextHourWeatherProvider, TodayWeatherProvider } from './context/WeatherContext';
+import Account from './Routes/Account/Account';
+import Covid from './Routes/Covid/Covid';
+import Weather from './Routes/Weather/Weather';
+import { Navigation_T } from './Types/GlobalTypes';
 
 const Scroll = styled.div`
 	width: 100vw;
@@ -21,59 +22,45 @@ const Scroll = styled.div`
 	text-align: center;
 `;
 
-function App() {
-	return (
-		<div>
-			<BrowserRouter>
-				<Scroll>
-					<ServiceContextProvider>
-						<Routes>
-
-							<Route path={Navigation_T.WEATHER} element={
-								<Weather />
-							} />
-
-							<Route path={Navigation_T.COVID} element={
-								<Covid />
-							} />
-
-							<Route path={Navigation_T.ACCOUNT} element={
-								<Account />
-							} />
-
-						</Routes>
-					</ServiceContextProvider>
-				</Scroll>
-				<NavigationBar />
-			</BrowserRouter>
-		</div>
-	);
-}
-
 function ServiceContextProvider({ children }: React.PropsWithChildren<React.ReactNode>) {
 	return (
 		<CookiesProvider>
-		<UserDataProvider>
-		<UserLocationProvider>
-		<TodayWeatherProvider>
-		<NextHourWeatherProvider>
-		<NextDayWeatherProvider>
-		<TodayCovidProvider>
-		<LastWeekCovidProvider>
-		<SidoCovidProvider>
-
-			{children}
-
-		</SidoCovidProvider>
-		</LastWeekCovidProvider>
-		</TodayCovidProvider>
-		</NextDayWeatherProvider>
-		</NextHourWeatherProvider>
-		</TodayWeatherProvider>
-		</UserLocationProvider>
-		</UserDataProvider>
+			<UserDataProvider>
+				<UserLocationProvider>
+					<TodayWeatherProvider>
+						<NextHourWeatherProvider>
+							<NextDayWeatherProvider>
+								<TodayCovidProvider>
+									<LastWeekCovidProvider>
+										<SidoCovidProvider>{children}</SidoCovidProvider>
+									</LastWeekCovidProvider>
+								</TodayCovidProvider>
+							</NextDayWeatherProvider>
+						</NextHourWeatherProvider>
+					</TodayWeatherProvider>
+				</UserLocationProvider>
+			</UserDataProvider>
 		</CookiesProvider>
-	)
+	);
+}
+
+function App() {
+	return (
+		<BrowserRouter>
+			<Scroll>
+				<ServiceContextProvider>
+					<Routes>
+						<Route path={Navigation_T.WEATHER} element={<Weather />} />
+
+						<Route path={Navigation_T.COVID} element={<Covid />} />
+
+						<Route path={Navigation_T.ACCOUNT} element={<Account />} />
+					</Routes>
+				</ServiceContextProvider>
+			</Scroll>
+			<NavigationBar />
+		</BrowserRouter>
+	);
 }
 
 export default App;

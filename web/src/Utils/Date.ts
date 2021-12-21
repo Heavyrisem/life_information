@@ -1,35 +1,30 @@
-
 export function GetHour(Target: Date) {
-    // console.log(Target);
-    Target = new Date(Target);
-    const Now = new Date();
-    // const CalculatedDate = new Date(Math.abs(Target.getTime() - Now.getTime()));
+	const Now = new Date();
 
-    let result = "";
-    // console.log(Now.getHours(), CalculatedDate.getHours());
-    if (Target.getHours() === Now.getHours() && Target.getDay() === Now.getDay()) result = "지금";
-    else result = `${Target.getHours()}시`;
+	let result = '';
+	if (Target.getHours() === Now.getHours() && Target.getDay() === Now.getDay()) result = '지금';
+	else result = `${Target.getHours()}시`;
 
-    return result;
+	return result;
 }
 
-export const DAY = ["일", "월", "화", "수", "목", "금", "토"];
+export const DAY = ['일', '월', '화', '수', '목', '금', '토'];
 export function GetDay(Target: Date) {
-    const Now = new Date();
-    let result = "";
+	const Now = new Date();
+	let result = '';
 
-    if (Target.getDay() === Now.getDay() && Target.getDate() === Now.getDate()) result = "오늘";
-    else result = DAY[Target.getDay()];
+	if (Target.getDay() === Now.getDay() && Target.getDate() === Now.getDate()) result = '오늘';
+	else result = DAY[Target.getDay()];
 
-    return result;
+	return result;
 }
 
 export function GetDate(Target: Date) {
-    const Now = new Date();
-    let result = "";
+	const Now = new Date();
+	let result = '';
 
-    if (Target.getDate() === Now.getDate() && Target.getMonth() === Now.getMonth()) result = "오늘";
-    else result = Target.getDate()+"일";
+	if (Target.getDate() === Now.getDate() && Target.getMonth() === Now.getMonth()) result = '오늘';
+	else result = `${Target.getDate()}일`;
 
-    return result;
+	return result;
 }

@@ -6,33 +6,39 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "@types/crypto-js": "^4.0.2",
     "@types/jest": "^26.0.24",
     "@types/node": "^12.20.37",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/react-icons": "^3.0.0",
+    "@types/styled-components": "^5.1.18",
     "axios": "^0.24.0",
+    "crypto-js": "^4.1.1",
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-kakao-maps": "github:Musma/react-kakao-maps",
     "react-router-dom": "^6.1.1",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.0",
     "styled-components": "^5.3.3",
-    "typescript": "^4.5.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
+    "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "airbnb"
     ]
   },
   "browserslist": {
@@ -48,7 +54,19 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.17",
-    "daum.maps.d.ts": "github:Musma/daum.maps.d.ts"
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "daum.maps.d.ts": "github:Musma/daum.maps.d.ts",
+    "eslint": "^8.5.0",
+    "eslint-config-airbnb": "^19.0.2",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
   }
 }

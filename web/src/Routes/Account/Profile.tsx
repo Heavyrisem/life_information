@@ -1,94 +1,110 @@
-import React from "react";
-import { useContext } from "react";
-import styled from "styled-components";
-import { UserSetting_DB } from "../../../../shared/Types";
-import API from "../../API";
-import { ElementTitle, Emphasis, HorizontalDivider, ScrollElement, ScrollView, VerticalContainer, VerticalElement } from "../../components/Elements";
-import { UserDataContext } from "../../context/UserContext";
-import useError from "../../hooks/useError";
-import { LocationArray, Location_T } from "../../Types/WeatherType";
+import React, { useCallback, useContext } from 'react';
+import styled from 'styled-components';
+
+import { UserSetting_DB } from '../../../../shared/Types';
+import API from '../../API';
+import {
+	ElementTitle,
+	Emphasis,
+	HorizontalDivider,
+	ScrollElement,
+	ScrollView,
+	VerticalContainer,
+	VerticalElement,
+} from '../../components/Elements';
+import { UserDataContext } from '../../context/UserContext';
+import useError from '../../hooks/useError';
+import { LocationArray, Location_T } from '../../Types/WeatherType';
 
 const UserName = styled.div`
-    font-size: 3rem;
-    margin: .5rem 0;
+	font-size: 3rem;
+	margin: 0.5rem 0;
 `;
 const LogoutText = styled.div`
-    color: rgba(200, 200, 200,.5);
-    /* text-decoration: underline; */
+	color: rgba(200, 200, 200, 0.5);
+`;
+
+const SettingField = styled(VerticalElement)`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 1rem;
+	box-sizing: border-box;
 `;
 
 const SettingLabel = styled.div`
-    font-weight: bold;
+	font-weight: bold;
 `;
 
 const SettingSelect = styled.select`
-    text-align: right;
-    background: none;
-    border: none;
-    color: white;
+	text-align: right;
+	background: none;
+	border: none;
+	color: white;
 `;
 
-export function Profile() {
-    const ErrorHandler = useError();
-    const { UserData, setUserData } = useContext(UserDataContext);
+export default function Profile() {
+	const ErrorHandler = useError();
+	const { UserData, setUserData } = useContext(UserDataContext);
 
-    const SettingFieldStyle: React.CSSProperties = {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '0 1rem',
-        boxSizing: 'border-box'
-    }
+	const LogoutHandler = useCallback(() => {
+		API.account
+			.logout()
+			.then(res => res.status && setUserData(undefined))
+			.catch(ErrorHandler);
+	}, [ErrorHandler, setUserData]);
 
+	const LocationSettingHandler = useCallback(
+		(e: React.ChangeEvent<HTMLSelectElement>) => {
+			if (!UserData) return;
+			const setting: UserSetting_DB = {
+				...UserData.Setting,
+				Location: {
+					...UserData.Setting.Location,
+					name: e.target.value as Location_T,
+				},
+			};
 
-    function LogoutHandler() {
-        API.account.logout().then(res => res.status&& setUserData(undefined)).catch(ErrorHandler);
-    }
+			API.account
+				.updateSetting(UserData.ID, setting)
+				.then(res => res.status && setUserData({ ...UserData, Setting: setting }))
+				.catch(ErrorHandler);
+		},
+		[ErrorHandler, UserData, setUserData]
+	);
 
-    function LocationSettingHandler(e: React.ChangeEvent<HTMLSelectElement>) {
-        if (!UserData) return;
-        const setting: UserSetting_DB = {
-            ...UserData.Setting,
-            Location: {
-                ...UserData.Setting.Location,
-                name: e.target.value as Location_T
-            }
-        }
+	return (
+		<ScrollView>
+			{UserData && (
+				<>
+					<Emphasis>
+						<div>안녕하세요</div>
+						<UserName>{UserData.ID}</UserName>
+						<LogoutText onClick={LogoutHandler}>로그아웃</LogoutText>
+					</Emphasis>
 
-        API.account.updateSetting(UserData.ID, setting).then(res => res.status&& setUserData({...UserData, Setting:setting})).catch(ErrorHandler);
-    }
+					<ScrollElement>
+						<VerticalContainer>
+							<ElementTitle>날씨 설정</ElementTitle>
+							<HorizontalDivider />
 
-    return (
-        <ScrollView>
-            {UserData&&
-                <>
-                    <Emphasis>
-                        <div>안녕하세요</div>
-                        <UserName>{UserData.ID}</UserName>
-                        <LogoutText onClick={LogoutHandler}>로그아웃</LogoutText>
-                    </Emphasis>
-
-                    <ScrollElement>
-                        <VerticalContainer>
-
-                        <ElementTitle>날씨 설정</ElementTitle>
-                        <HorizontalDivider />
-
-
-                        <VerticalElement style={SettingFieldStyle}>
-                            <SettingLabel>지역</SettingLabel>
-                            <SettingSelect onChange={LocationSettingHandler} defaultValue={UserData.Setting.Location.name}>
-                                {LocationArray.map((Loc, i) => (
-                                    <option value={Location_T[Loc]} key={i}>{Location_T[Loc]}</option>
-                                ))}
-                            </SettingSelect>
-                        </VerticalElement>
-
-                        </VerticalContainer>
-                    </ScrollElement>
-                </>
-            }
-
-        </ScrollView>
-    )
+							<SettingField>
+								<SettingLabel>지역</SettingLabel>
+								<SettingSelect
+									onChange={LocationSettingHandler}
+									defaultValue={UserData.Setting.Location.name}
+								>
+									{LocationArray.map(Loc => (
+										<option value={Location_T[Loc]} key={Loc}>
+											{Location_T[Loc]}
+										</option>
+									))}
+								</SettingSelect>
+							</SettingField>
+						</VerticalContainer>
+					</ScrollElement>
+				</>
+			)}
+		</ScrollView>
+	);
 }
