@@ -34,12 +34,12 @@ __취소선은 구현 완료__
 * ~의존 모듈 package.json 모두 담기 (전역 모듈 삭제)~
 * ~Switch case {}~
 
-mongo 대신 Mongoose 사용
-Profile.tsx defaultValue={UserData.Setting.Location.name} 오류?
+* mongo 대신 Mongoose 사용
+* Profile.tsx defaultValue={UserData.Setting.Location.name} 오류?
 
 // 시간 나면 서버쪽 빌드/실행 코드
-~npm start = nodemon~
-~npm build = tsc~
+* ~npm start = nodemon~
+* ~npm build = tsc~
 
 
 ## 구성
