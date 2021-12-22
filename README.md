@@ -12,13 +12,34 @@ __취소선은 구현 완료__
 * 코로나
     * ~~기준일, 기준시간, 확진자 수, 사망자 수~~
     * ~~지난 일주일 추세 차트~~
-    * 감염자가 가장 많은 TOP3지역 => __추가 기능__
+    * ~감염자가 가장 많은 TOP5지역 => __추가 기능__~
 * 로그인
     * ~~로그인/로그아웃~~
     * ~~계정 관리 페이지~~
     * WYSIWYG 에디터로 사용자 소개 페이지 편집
 * 가이드
 
+### 12/20 피드백
+__취소선은 구현 완료__
+
+~Lint + prettier 적용하기~
+~weather.tsx 110 메모리제이션~
+~Router profile 메모리제이션~
+~Hr 대신 div~
+~함수, 변수 네이밍~
+~확진자 추세 누적에서 일 추가 확진자로 변경~
+~Cssproperties => styled 상속으로 변경~
+~Readme mongodb docker 사용부분 수정~
+~APIKEY.json 제거~
+~의존 모듈 package.json 모두 담기 (전역 모듈 삭제)~
+~Switch case {}~
+
+mongo 대신 Mongoose 사용
+Profile.tsx defaultValue={UserData.Setting.Location.name} 오류?
+
+// 시간 나면 서버쪽 빌드/실행 코드
+~npm start = nodemon~
+~npm build = tsc~
 
 
 ## 구성
